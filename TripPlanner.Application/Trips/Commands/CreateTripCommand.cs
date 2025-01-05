@@ -35,7 +35,11 @@ public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, Guid>
 
     public async Task<Guid> Handle(CreateTripCommand request, CancellationToken cancellationToken)
     {
-        var entity = new Trip(request.Title, _userId);
+        var user = await _context.Users.FindAsync(_userId, cancellationToken);
+        
+        Guard.Against.Null(user, nameof(user));
+        
+        var entity = new Trip(request.Title, user);
 
         _context.Trips.Add(entity);
 

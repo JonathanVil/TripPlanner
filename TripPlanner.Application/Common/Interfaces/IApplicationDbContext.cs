@@ -5,6 +5,8 @@ namespace TripPlanner.Application.Common.Interfaces;
 
 public interface IApplicationDbContext
 {
+    DbSet<ApplicationUser> Users { get; }
+    
     DbSet<Trip> Trips { get; }
     
     DbSet<Entry> Entries { get; }

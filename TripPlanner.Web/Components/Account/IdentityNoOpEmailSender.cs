@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using TripPlanner.Core.Entities;
 using TripPlanner.Infrastructure.Identity;
 
 namespace TripPlanner.Web.Components.Account;

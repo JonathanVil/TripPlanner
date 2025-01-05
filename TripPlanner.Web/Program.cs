@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TripPlanner.Core.Entities;
 using TripPlanner.Infrastructure.Data;
 using TripPlanner.Infrastructure.Identity;
 using TripPlanner.Web.Components;

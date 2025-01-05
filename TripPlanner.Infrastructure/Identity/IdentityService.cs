@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Infrastructure.Identity;
 
