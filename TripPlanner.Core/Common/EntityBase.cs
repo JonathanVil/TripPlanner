@@ -1,11 +1,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using TripPlanner.Core.Common;
 
-namespace TripPlanner.Core.Entities;
+namespace TripPlanner.Core.Common;
 
 public abstract class EntityBase
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public Guid Id { get; set; }
     public DateTimeOffset Created { get; set; }
     public Guid? CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }

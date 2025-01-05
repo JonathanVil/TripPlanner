@@ -1,7 +1,27 @@
 ﻿@page "/"
+@using Ardalis.GuardClauses
+@using MediatR
+@using TripPlanner.Application.Trips.Queries
+
+@* @inject ISender Sender *@
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Your Trips</h1>
 
-Welcome to your new app.
+@foreach(var trip in _trips)
+{
+    <p>@trip.Title</p>
+}
+
+@code {
+    
+    private IReadOnlyCollection<TripDto>? _trips;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // var result = await Sender.Send(new GetTripsQuery());
+        // _trips = Guard.Against.Null(result);
+    }
+
+}
