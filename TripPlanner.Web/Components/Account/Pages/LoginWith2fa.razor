@@ -1,10 +1,9 @@
 ﻿@page "/Account/LoginWith2fa"
 
 @using System.ComponentModel.DataAnnotations
+
 @using Microsoft.AspNetCore.Identity
 @using TripPlanner.Core.Entities
-@using TripPlanner.Infrastructure.Identity
-
 
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -25,8 +24,8 @@
             <DataAnnotationsValidator/>
             <ValidationSummary class="text-danger" role="alert"/>
             <div class="form-floating mb-3">
-                <InputText @bind-Value="Input.TwoFactorCode" id="Input.TwoFactorCode" class="form-control" autocomplete="off"/>
-                <label for="Input.TwoFactorCode" class="form-label">Authenticator code</label>
+                <InputText @bind-Value="Input.TwoFactorCode" class="form-control" autocomplete="off"/>
+                <label for="two-factor-code" class="form-label">Authenticator code</label>
                 <ValidationMessage For="() => Input.TwoFactorCode" class="text-danger"/>
             </div>
             <div class="checkbox mb-3">

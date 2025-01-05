@@ -7,11 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using TripPlanner.Core.Entities;
-using TripPlanner.Infrastructure.Identity;
 using TripPlanner.Web.Components.Account.Pages;
 using TripPlanner.Web.Components.Account.Pages.Manage;
 
-namespace Microsoft.AspNetCore.Routing;
+namespace TripPlanner.Web.Components.Account;
 
 internal static class IdentityComponentsEndpointRouteBuilderExtensions
 {

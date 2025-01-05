@@ -3,7 +3,7 @@
 @using MediatR
 @using TripPlanner.Application.Trips.Queries
 
-@* @inject ISender Sender *@
+@inject ISender Sender
 
 <PageTitle>Home</PageTitle>
 
@@ -20,8 +20,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // var result = await Sender.Send(new GetTripsQuery());
-        // _trips = Guard.Against.Null(result);
+        var result = await Sender.Send(new GetTripsQuery());
+        _trips = Guard.Against.Null(result);
     }
 
 }

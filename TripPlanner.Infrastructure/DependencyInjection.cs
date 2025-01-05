@@ -12,9 +12,9 @@ namespace TripPlanner.Infrastructure;
 public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration, bool useSqlite = false)
+        IConfiguration configuration)
     {
-        var connectionString = configuration.GetConnectionString(useSqlite ? "SqliteConnection" : "DefaultConnection");
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
 
         Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
 
