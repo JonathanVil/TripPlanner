@@ -3,11 +3,11 @@
 @using System.Text
 @using Microsoft.AspNetCore.Identity
 @using Microsoft.AspNetCore.WebUtilities
-@using TripPlanner.Core.Entities
+@using TripPlanner.Infrastructure.Identity
 
 
-@inject UserManager<User> UserManager
-@inject SignInManager<User> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@inject SignInManager<ApplicationUser> SignInManager
 @inject IdentityRedirectManager RedirectManager
 
 <PageTitle>Confirm email change</PageTitle>

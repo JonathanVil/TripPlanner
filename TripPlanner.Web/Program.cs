@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using TripPlanner.Infrastructure.Data;
+using TripPlanner.Infrastructure.Identity;
 using TripPlanner.Web.Components;
 using TripPlanner.Web.Components.Account;
-using TripPlanner.Web.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

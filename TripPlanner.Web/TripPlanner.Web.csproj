@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TripPlanner.Core\TripPlanner.Core.csproj" />
+      <ProjectReference Include="..\TripPlanner.Infrastructure\TripPlanner.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

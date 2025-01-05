@@ -3,10 +3,10 @@
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Identity
-@using TripPlanner.Core.Entities
+@using TripPlanner.Infrastructure.Identity
 
 
-@inject SignInManager<User> SignInManager
+@inject SignInManager<ApplicationUser> SignInManager
 @inject ILogger<Login> Logger
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
