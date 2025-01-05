@@ -4,6 +4,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlanner.Web", "TripPlan
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlanner.Core", "TripPlanner.Core\TripPlanner.Core.csproj", "{5F1AE9ED-E0D6-40AD-8D60-1C3A14737F02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlanner.Application", "TripPlanner.Application\TripPlanner.Application.csproj", "{66569758-B8D8-4BC1-9FA8-BE08D2E05753}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlanner.Infrastructure", "TripPlanner.Infrastructure\TripPlanner.Infrastructure.csproj", "{1E02787D-9FD6-4104-92B5-1EEB2A7EF2DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +22,13 @@ Global
 		{5F1AE9ED-E0D6-40AD-8D60-1C3A14737F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F1AE9ED-E0D6-40AD-8D60-1C3A14737F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F1AE9ED-E0D6-40AD-8D60-1C3A14737F02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66569758-B8D8-4BC1-9FA8-BE08D2E05753}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66569758-B8D8-4BC1-9FA8-BE08D2E05753}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66569758-B8D8-4BC1-9FA8-BE08D2E05753}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66569758-B8D8-4BC1-9FA8-BE08D2E05753}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E02787D-9FD6-4104-92B5-1EEB2A7EF2DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E02787D-9FD6-4104-92B5-1EEB2A7EF2DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E02787D-9FD6-4104-92B5-1EEB2A7EF2DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E02787D-9FD6-4104-92B5-1EEB2A7EF2DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
