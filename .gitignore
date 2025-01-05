@@ -268,3 +268,12 @@ __pycache__/
 # Cake - Uncomment if you are using it
 # tools/
 
+# minified css
+*.min.css
+
+# package manager files
+package.json
+package-lock.json
+
+# sqlite
+identifier.sqlite
