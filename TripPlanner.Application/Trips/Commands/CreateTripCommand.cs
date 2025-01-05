@@ -2,6 +2,7 @@ using Ardalis.GuardClauses;
 using FluentValidation;
 using MediatR;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Application.Trips.Queries;
 using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips.Commands;
@@ -36,10 +37,16 @@ public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, Guid>
     public async Task<Guid> Handle(CreateTripCommand request, CancellationToken cancellationToken)
     {
         var user = await _context.Users.FindAsync(_userId, cancellationToken);
-        
+
         Guard.Against.Null(user, nameof(user));
-        
-        var entity = new Trip(request.Title, user);
+
+        var entity = new Trip(request.Title);
+        entity.Participants.Add(new Participation
+        {
+            UserId = _userId,
+            TripId = entity.Id,
+            IsOwner = true
+        });
 
         _context.Trips.Add(entity);
 

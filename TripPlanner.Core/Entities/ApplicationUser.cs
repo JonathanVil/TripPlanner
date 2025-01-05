@@ -4,5 +4,5 @@ namespace TripPlanner.Core.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>
 {
-    public List<Trip> Trips { get; set; } = new();
+    public List<Participation> Participations { get; set; } = new();
 }

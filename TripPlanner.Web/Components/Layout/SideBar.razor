@@ -62,6 +62,7 @@
     private readonly NavLink[] NavLinks =
     [
         new("Home", "/", NavLinkVisibility.Always, new MarkupString(DashboardIcon)),
+        new("Login", "Account/Login", NavLinkVisibility.Unauthenticated, new MarkupString(LockIcon)),
         new("Register", "Account/Register", NavLinkVisibility.Unauthenticated, new MarkupString(LockIcon)),
         new("Logout", "Account/Logout", NavLinkVisibility.Authenticated, new MarkupString(LockIcon))
     ];

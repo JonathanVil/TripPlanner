@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Components.Authorization;
 using TripPlanner.Application;
 using TripPlanner.Infrastructure;
+using TripPlanner.Infrastructure.Data;
 using TripPlanner.Web;
 using TripPlanner.Web.Components;
 using TripPlanner.Web.Components.Account;
@@ -27,7 +28,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    // await app.InitializeDatabaseAsync(useMigrations: false);
+    await app.InitializeDatabaseAsync(useMigrations: false);
 }
 else
 {

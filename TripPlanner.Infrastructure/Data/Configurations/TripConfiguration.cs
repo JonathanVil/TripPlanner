@@ -11,5 +11,7 @@ public class TripConfiguration : IEntityTypeConfiguration<Trip>
         builder.Property(a => a.Title)
             .HasMaxLength(100)
             .IsRequired();
+        
+        builder.HasMany(t => t.Participants);
     }
 }

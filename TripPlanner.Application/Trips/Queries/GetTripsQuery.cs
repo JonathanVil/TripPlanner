@@ -38,7 +38,7 @@ public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyColl
         var trips = await _context.Trips
             .AsNoTracking()
             .Include(t => t.Participants)
-            .Where(t => t.Participants.Any(p => p.Id == _userId))
+            .Where(t => t.Participants.Any(p => p.UserId == _userId))
             .ProjectTo<TripDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken: cancellationToken);
         

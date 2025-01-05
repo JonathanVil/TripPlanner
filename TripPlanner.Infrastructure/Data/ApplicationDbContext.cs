@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity;
+using System.Reflection;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
@@ -13,4 +13,10 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     // Users DbSet is inherited from IdentityDbContext
     public DbSet<Trip> Trips => Set<Trip>();
     public DbSet<Entry> Entries => Set<Entry>();
+    
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
 }
