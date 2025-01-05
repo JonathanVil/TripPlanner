@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Identity;
-using TripPlanner.Web.Data;
+using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Web.Components.Account;
 
 internal sealed class IdentityUserAccessor(
-    UserManager<ApplicationUser> userManager,
+    UserManager<User> userManager,
     IdentityRedirectManager redirectManager)
 {
-    public async Task<ApplicationUser> GetRequiredUserAsync(HttpContext context)
+    public async Task<User> GetRequiredUserAsync(HttpContext context)
     {
         var user = await userManager.GetUserAsync(context.User);
 

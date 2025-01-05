@@ -4,11 +4,11 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using TripPlanner.Web.Data;
+using TripPlanner.Infrastructure.Data;
 
 #nullable disable
 
-namespace TripPlanner.Web.Migrations
+namespace TripPlanner.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
