@@ -1,0 +1,44 @@
+@page "/trip/{Id:guid}"
+@using MediatR
+@using TripPlanner.Application.Trips.Queries
+
+@inject ISender Sender
+
+<div>
+    @if (_trip == null)
+    {
+        <p>Loading ...</p>
+    }
+    else
+    {
+        <div>
+
+            <h1 class="text-2xl mb-4">@_trip?.Title</h1>
+            <li>
+                @foreach (var member in _trip!.Participants)
+                {
+                    <ul>@member</ul>
+                }
+            </li>
+        </div>
+
+        <EditForm>
+            <InputText></InputText>
+
+            <FlowButton Type="FlowButton.ButtonType.Submit">Add an entry</FlowButton>
+        </EditForm>
+    }
+</div>
+
+@code {
+
+    [Parameter] public Guid Id { get; set; }
+
+    private TripDto? _trip;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // get trip
+        _trip = await Sender.Send(new GetTripQuery(Id));
+    }
+}

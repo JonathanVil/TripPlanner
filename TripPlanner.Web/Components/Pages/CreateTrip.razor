@@ -1,4 +1,9 @@
 @page "/create"
+@using MediatR
+@using TripPlanner.Application.Trips.Commands
+
+@inject NavigationManager NavigationManager
+@inject ISender Sender
 
 <div class="space-y-8">
     <div>
@@ -19,20 +24,22 @@
 
 
 @code {
-    
-    [SupplyParameterFromForm]
-    private string? Name { get; set; }
 
-    private void Create()
+    [SupplyParameterFromForm] private string? Name { get; set; }
+
+    private async Task Create()
     {
         if (string.IsNullOrWhiteSpace(Name))
         {
             return;
         }
-        
-        // check if user is authenticated
-        // if not, redirect to login
-        // if authenticated, create trip
+
+        var id = await Sender.Send(new CreateTripCommand
+        {
+            Title = Name
+        });
+
+        NavigationManager.NavigateTo($"/trip/{id}");
     }
 
 }

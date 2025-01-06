@@ -2,14 +2,15 @@ using Ardalis.GuardClauses;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
+using Galerie.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
 
 namespace TripPlanner.Application.Trips.Queries;
 
-// [Authorize]
-public class GetTripsQuery : IRequest<IReadOnlyCollection<TripDto>>
+[Authorize]
+public record GetTripsQuery : IRequest<IReadOnlyCollection<TripDto>>
 {
 }
 

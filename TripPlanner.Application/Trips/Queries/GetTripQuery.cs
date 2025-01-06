@@ -10,7 +10,7 @@ using TripPlanner.Application.Common.Interfaces;
 namespace TripPlanner.Application.Trips.Queries;
 
 [Authorize]
-public class GetTripQuery(Guid id) : IRequest<TripDto?>
+public record GetTripQuery(Guid id) : IRequest<TripDto?>
 {
     public Guid Id { get; } = id;
 }

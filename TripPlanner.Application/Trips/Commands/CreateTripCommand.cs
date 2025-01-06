@@ -8,7 +8,7 @@ using TripPlanner.Core.Entities;
 namespace TripPlanner.Application.Trips.Commands;
 
 // [Authorize]
-public class CreateTripCommand : IRequest<Guid>
+public record CreateTripCommand : IRequest<Guid>
 {
     public string Title { get; set; } = null!;
 }
