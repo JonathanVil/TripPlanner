@@ -1,0 +1,38 @@
+@page "/create"
+
+<div class="space-y-8">
+    <div>
+        <h1 class="text-2xl mb-4">Create a trip</h1>
+        <form method="post" @onsubmit="Create" @formname="create-trip-form">
+            <AntiforgeryToken/>
+
+            <p class="mb-2">Start by giving the trip a name</p>
+            <InputText @bind-Value="Name" class="rounded text-black" maxlength="20" minlength="4" id="name" required/>
+            <FlowButton Type="FlowButton.ButtonType.Submit">Create</FlowButton>
+        </form>
+    </div>
+    <div>
+        <p class="mb-4">Trying to existing trip?</p>
+        <FlowButton Type="FlowButton.ButtonType.Link" Href="/">Join a trip</FlowButton>
+    </div>
+</div>
+
+
+@code {
+    
+    [SupplyParameterFromForm]
+    private string? Name { get; set; }
+
+    private void Create()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+        {
+            return;
+        }
+        
+        // check if user is authenticated
+        // if not, redirect to login
+        // if authenticated, create trip
+    }
+
+}
