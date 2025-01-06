@@ -1,0 +1,39 @@
+@switch (Typo)
+{
+    case HeadingTypography.H1:
+        <h1 class="text-5xl font-extrabold dark:text-white mb-6">@ChildContent</h1>
+        break;
+    case HeadingTypography.H2:
+        <h2 class="text-4xl font-bold dark:text-white mb-6">@ChildContent</h2>
+        break;
+    case HeadingTypography.H3:
+        <h3 class="text-3xl font-bold dark:text-white mb-6">@ChildContent</h3>
+        break;
+    case HeadingTypography.H4:
+        <h4 class="text-2xl font-bold dark:text-white mb-6">@ChildContent</h4>
+        break;
+    case HeadingTypography.H5:
+        <h5 class="text-xl font-bold dark:text-white mb-6">@ChildContent</h5>
+        break;
+    case HeadingTypography.H6:
+    default:
+        <h6 class="text-lg font-bold dark:text-white mb-6">@ChildContent</h6>
+        break;
+}
+
+@code {
+    [Parameter] public RenderFragment ChildContent { get; set; }
+
+    [Parameter] public HeadingTypography Typo { get; set; } = HeadingTypography.H1;
+
+    public enum HeadingTypography
+    {
+        H1,
+        H2,
+        H3,
+        H4,
+        H5,
+        H6
+    }
+
+}
