@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="antialiased bg-gray-50 dark:bg-gray-900 min-h-screen w-screen">
-    <TopBar/>
+<div class="antialiased text-white bg-slate-800 min-h-screen w-screen">
+    @* <TopBar/> *@
+    @* *@
+    @* <SideBar/> *@
 
-    <SideBar/>
-
-    <main class="p-4 md:ml-64 pt-20">
-        <article class="p-4 mt-4">
+    <main class="grid place-items-center h-screen text-center">
+        <article>
             @Body
         </article>
     </main>
