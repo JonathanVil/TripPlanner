@@ -211,7 +211,7 @@ namespace TripPlanner.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Entries");
+                    b.ToTable("Entries", (string)null);
                 });
 
             modelBuilder.Entity("TripPlanner.Core.Entities.Participation", b =>
@@ -229,7 +229,7 @@ namespace TripPlanner.Infrastructure.Migrations
 
                     b.HasIndex("TripId");
 
-                    b.ToTable("Participation");
+                    b.ToTable("Participation", (string)null);
                 });
 
             modelBuilder.Entity("TripPlanner.Core.Entities.Trip", b =>
@@ -257,7 +257,7 @@ namespace TripPlanner.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Trips");
+                    b.ToTable("Trips", (string)null);
                 });
 
             modelBuilder.Entity("TripPlanner.Infrastructure.Identity.ApplicationRole", b =>

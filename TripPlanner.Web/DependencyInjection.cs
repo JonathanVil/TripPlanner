@@ -18,34 +18,20 @@ public static class DependencyInjection
                 o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
             })
             .AddIdentityCookies();
-
-        // if (config.GetSection("Authentication:Google").GetChildren().Any())
-        // {
-        //     // get the google options
-        //     var googleOptions = new GoogleOptions();
-        //     config.GetSection("Authentication:Google").Bind(googleOptions);
-        //     
-        //     services.AddAuthentication()
-        //         .AddGoogle(options => 
-        //         {
-        //             options.ClientId = googleOptions.ClientId;
-        //             options.ClientSecret = googleOptions.ClientSecret;
-        //         });
-        // }
         
         services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddRoles<ApplicationRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders()
             .AddSignInManager();
-        
+
         services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
         services.AddSingleton(TimeProvider.System);
         services.AddTransient<IIdentityService, IdentityService>();
 
         services.AddAuthorization();
-        
+
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         services.AddScoped<IUser, CurrentUser>();
@@ -56,7 +42,7 @@ public static class DependencyInjection
             .AddDbContextCheck<ApplicationDbContext>();
 
         // services.AddExceptionHandler<CustomExceptionHandler>();
-        
+
         return services;
     }
 
