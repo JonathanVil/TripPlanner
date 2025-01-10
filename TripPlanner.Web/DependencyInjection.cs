@@ -1,5 +1,7 @@
-﻿using TripPlanner.Application.Common.Interfaces;
+﻿using Blazored.LocalStorage;
+using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Infrastructure.Data;
+using TripPlanner.Infrastructure.Identity;
 using TripPlanner.Web.Services;
 
 namespace TripPlanner.Web;
@@ -12,6 +14,7 @@ public static class DependencyInjection
         
         services.AddDatabaseDeveloperPageExceptionFilter();
 
+        services.AddTransient<IIdentityService, IdentityService>();
         services.AddScoped<IUser, CurrentUser>();
 
         services.AddHttpContextAccessor();
@@ -19,6 +22,7 @@ public static class DependencyInjection
         services.AddHealthChecks()
             .AddDbContextCheck<ApplicationDbContext>();
 
+        services.AddBlazoredLocalStorage();
 
         return services;
     }

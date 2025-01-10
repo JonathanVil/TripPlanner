@@ -1,0 +1,40 @@
+@using System.ComponentModel.DataAnnotations
+@using TripPlanner.Application.Common.Interfaces
+
+@inject IIdentityService IdentityService
+@inject NavigationManager NavigationManager
+@inject IUser CurrentUser
+
+<h1 class="text-2xl mb-4">Welcome!</h1>
+
+<p>Enter your name to get started!</p>
+
+<EditForm Model="Model" FormName="CreateUser" OnValidSubmit="CreateUser">
+    <InputText @bind-Value="Model.Name" class="rounded text-black" required/>
+    <FlowButton Type="FlowButton.ButtonType.Submit">Start</FlowButton>
+</EditForm>
+
+@code {
+
+    [SupplyParameterFromForm]
+    private CreateUserModel Model { get; set; } = new();
+    
+    class CreateUserModel
+    {
+        [Required] public string Name { get; set; }
+    }
+    
+    private async Task CreateUser()
+    {
+        // create user
+        var result = await IdentityService.CreateUserAsync(Model.Name);
+        
+        if(!result.Result.Succeeded) return;
+        
+        // set user cookie
+        await CurrentUser.SetUserIdAsync(result.UserId);
+
+        // redirect to home
+        NavigationManager.NavigateTo("/");
+    }
+}

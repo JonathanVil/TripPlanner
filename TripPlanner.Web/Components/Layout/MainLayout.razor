@@ -1,4 +1,7 @@
-﻿@inherits LayoutComponentBase
+﻿@using TripPlanner.Application.Common.Interfaces
+@inherits LayoutComponentBase
+
+@inject IUser CurrentUser
 
 <div class="antialiased text-white bg-slate-800 min-h-screen w-screen">
     @* <TopBar/> *@
@@ -9,7 +12,14 @@
 
     <main class="grid place-items-center h-screen text-center">
         <article>
-            @Body
+            @if (_userId == null)
+            {
+                <WelcomeWizard/>
+            }
+            else
+            {
+                @Body
+            }
         </article>
     </main>
 </div>
@@ -19,3 +29,14 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+    private Guid? _userId;
+
+    protected override void OnInitialized()
+    {
+        // get user id
+        _userId = CurrentUser.Id;
+    }
+
+}

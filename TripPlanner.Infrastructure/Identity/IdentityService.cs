@@ -1,5 +1,5 @@
-using Galerie.Application.Common.Models;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Application.Common.Models;
 using TripPlanner.Core.Entities;
 using TripPlanner.Infrastructure.Data;
 
@@ -16,31 +16,38 @@ public class IdentityService : IIdentityService
 
     public async Task<string?> GetUserNameAsync(Guid userId)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(userId);
+        return user?.Name;
     }
 
-    public async Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password)
+    public async Task<(Result Result, Guid UserId)> CreateUserAsync(string name)
     {
-        throw new NotImplementedException();
-    }
+        var user = new User { Name = name };
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
 
-    public async Task<bool> IsInRoleAsync(Guid userId, string role)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> AuthorizeAsync(Guid userId, string policyName)
-    {
-        throw new NotImplementedException();
+        return (Result.Success(), user.Id);
     }
 
     public async Task<Result> DeleteUserAsync(Guid userId)
     {
-        throw new NotImplementedException();
+        var user = await _context.Users.FindAsync(userId);
+
+        if (user == null)
+        {
+            return Result.Failure(["User not found."]);
+        }
+
+        await DeleteUserAsync(user);
+
+        return Result.Success();
     }
 
     public async Task<Result> DeleteUserAsync(User user)
     {
-        throw new NotImplementedException();
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+
+        return Result.Success();
     }
 }

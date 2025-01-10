@@ -1,4 +1,4 @@
-using Galerie.Application.Common.Models;
+using TripPlanner.Application.Common.Models;
 
 namespace TripPlanner.Application.Common.Interfaces;
 
@@ -6,11 +6,7 @@ public interface IIdentityService
 {
     Task<string?> GetUserNameAsync(Guid userId);
 
-    Task<bool> IsInRoleAsync(Guid userId, string role);
-
-    Task<bool> AuthorizeAsync(Guid userId, string policyName);
-
-    Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password);
+    Task<(Result Result, Guid UserId)> CreateUserAsync(string userName);
 
     Task<Result> DeleteUserAsync(Guid userId);
 }

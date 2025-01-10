@@ -1,4 +1,4 @@
-﻿namespace Galerie.Application.Common.Models;
+﻿namespace TripPlanner.Application.Common.Models;
 
 public class Result
 {

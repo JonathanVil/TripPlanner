@@ -1,5 +1,5 @@
-﻿using Galerie.Application.Common.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
+using TripPlanner.Application.Common.Models;
 
 namespace TripPlanner.Infrastructure.Identity;
 
