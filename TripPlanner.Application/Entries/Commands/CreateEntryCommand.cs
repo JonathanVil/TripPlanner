@@ -37,7 +37,7 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
     {
         var user = await _context.Users.FindAsync(_userId, cancellationToken);
         Guard.Against.Null(user, nameof(user));
-        
+
         var trip = await _context.Trips.FindAsync(request.TripId, cancellationToken);
 
         Guard.Against.Null(trip, nameof(trip));
@@ -46,7 +46,12 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
             throw new ForbiddenAccessException();
         }
 
-        var entity = new Entry(trip, request.Name, user);
+        var entity = new Entry
+        {
+            Name = request.Name,
+            Trip = trip,
+            User = user
+        };
 
         _context.Entries.Add(entity);
 

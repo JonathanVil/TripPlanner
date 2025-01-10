@@ -1,13 +1,11 @@
-using Ardalis.GuardClauses;
-
 namespace TripPlanner.Core.Entities;
 
-public class Entry(Trip trip, string name, ApplicationUser user) : EntityBase
+public class Entry : EntityBase
 {
-    public virtual Trip Trip { get; set; } = Guard.Against.Null(trip, nameof(trip));
+    public required Trip Trip { get; set; }
     public Guid TripId { get; set; }
-    public string Name { get; set; } = Guard.Against.NullOrEmpty(name, nameof(name));
+    public required string Name { get; set; }
     public string? Description { get; set; }
-    public virtual ApplicationUser User { get; set; } = Guard.Against.Null(user, nameof(user));
+    public required ApplicationUser User { get; set; }
     public Guid UserId { get; set; }
 }
