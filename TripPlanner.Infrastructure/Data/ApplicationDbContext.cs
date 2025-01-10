@@ -1,16 +1,13 @@
 using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Core.Entities;
-using TripPlanner.Infrastructure.Identity;
 
 namespace TripPlanner.Infrastructure.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-    : IdentityDbContext<ApplicationUser, ApplicationRole, Guid>(options), IApplicationDbContext
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IApplicationDbContext
 {
-    // Users DbSet is inherited from IdentityDbContext
+    public DbSet<User> Users => Set<User>();
     public DbSet<Trip> Trips => Set<Trip>();
     public DbSet<Entry> Entries => Set<Entry>();
     

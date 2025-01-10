@@ -14,7 +14,7 @@ public record TripDto
         public Mapping()
         {
             CreateMap<Trip, TripDto>()
-                .ForMember(t => t.Participants, opt => opt.MapFrom(s => s.Participants.Select(p => p.User.UserName)));
+                .ForMember(t => t.Participants, opt => opt.MapFrom(t => t.Participants.Select(p => p.User.Name)));
         }
     }
 }

@@ -1,82 +1,46 @@
 using Galerie.Application.Common.Models;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Core.Entities;
+using TripPlanner.Infrastructure.Data;
 
 namespace TripPlanner.Infrastructure.Identity;
 
 public class IdentityService : IIdentityService
 {
-    private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IUserClaimsPrincipalFactory<ApplicationUser> _userClaimsPrincipalFactory;
-    private readonly IAuthorizationService _authorizationService;
+    private readonly ApplicationDbContext _context;
 
-    public IdentityService(
-        UserManager<ApplicationUser> userManager,
-        IUserClaimsPrincipalFactory<ApplicationUser> userClaimsPrincipalFactory,
-        IAuthorizationService authorizationService)
+    public IdentityService(ApplicationDbContext context)
     {
-        _userManager = userManager;
-        _userClaimsPrincipalFactory = userClaimsPrincipalFactory;
-        _authorizationService = authorizationService;
+        _context = context;
     }
 
     public async Task<string?> GetUserNameAsync(Guid userId)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        return user?.UserName;
+        throw new NotImplementedException();
     }
 
     public async Task<(Result Result, Guid UserId)> CreateUserAsync(string userName, string password)
     {
-        var user = new ApplicationUser
-        {
-            UserName = userName,
-            Email = userName,
-        };
-
-        var result = await _userManager.CreateAsync(user, password);
-
-        return (result.ToApplicationResult(), user.Id);
+        throw new NotImplementedException();
     }
 
     public async Task<bool> IsInRoleAsync(Guid userId, string role)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        return user != null && await _userManager.IsInRoleAsync(user, role);
+        throw new NotImplementedException();
     }
 
     public async Task<bool> AuthorizeAsync(Guid userId, string policyName)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        if (user == null)
-        {
-            return false;
-        }
-
-        var principal = await _userClaimsPrincipalFactory.CreateAsync(user);
-
-        var result = await _authorizationService.AuthorizeAsync(principal, policyName);
-
-        return result.Succeeded;
+        throw new NotImplementedException();
     }
 
     public async Task<Result> DeleteUserAsync(Guid userId)
     {
-        var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-        return user != null ? await DeleteUserAsync(user) : Result.Success();
+        throw new NotImplementedException();
     }
 
-    public async Task<Result> DeleteUserAsync(ApplicationUser user)
+    public async Task<Result> DeleteUserAsync(User user)
     {
-        var result = await _userManager.DeleteAsync(user);
-
-        return result.ToApplicationResult();
+        throw new NotImplementedException();
     }
 }

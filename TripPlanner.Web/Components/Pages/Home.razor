@@ -5,8 +5,6 @@
 
 @inject ISender Sender
 
-@attribute [AllowAnonymous]
-
 <div class="space-y-6">
     <div>
         <h1 class="text-2xl mb-4">Join a trip</h1>
@@ -24,19 +22,19 @@
         <FlowButton Type="FlowButton.ButtonType.Link" Href="/create">Create a trip</FlowButton>
     </div>
 
-    <AuthorizeView>
-        <Authorized>
-            <h1 class="text-2xl mb-4">Your Trips</h1>
-
-            @if (_trips != null)
-            {
-                @foreach (var trip in _trips)
-                {
-                    <p>@trip.Title</p>
-                }
-            }
-        </Authorized>
-    </AuthorizeView>
+    @* <AuthorizeView> *@
+    @*     <Authorized> *@
+    @*         <h1 class="text-2xl mb-4">Your Trips</h1> *@
+    @* *@
+    @*         @if (_trips != null) *@
+    @*         { *@
+    @*             @foreach (var trip in _trips) *@
+    @*             { *@
+    @*                 <p>@trip.Title</p> *@
+    @*             } *@
+    @*         } *@
+    @*     </Authorized> *@
+    @* </AuthorizeView> *@
 </div>
 
 
