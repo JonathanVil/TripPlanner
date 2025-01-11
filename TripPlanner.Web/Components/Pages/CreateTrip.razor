@@ -8,13 +8,14 @@
 <div class="space-y-8">
     <div>
         <h1 class="text-2xl mb-4">Create a trip</h1>
-        <form method="post" @onsubmit="Create" @formname="create-trip-form">
-            <AntiforgeryToken/>
+        <EditForm Model="Model" OnValidSubmit="Create" @formname="create-trip-form">
+            <FluentValidationValidator/>
 
             <p class="mb-2">Start by giving the trip a name</p>
-            <InputText @bind-Value="Name" class="rounded text-black" maxlength="20" minlength="4" id="name" required/>
+            <InputText @bind-Value="Model.Title" class="rounded text-black" maxlength="20" minlength="4" id="name"
+                       required/>
             <FlowButton Type="FlowButton.ButtonType.Submit">Create</FlowButton>
-        </form>
+        </EditForm>
     </div>
     <div>
         <p class="mb-4">Trying to existing trip?</p>
@@ -24,20 +25,11 @@
 
 
 @code {
-
-    [SupplyParameterFromForm] private string? Name { get; set; }
+    [SupplyParameterFromForm] private CreateTripCommand Model { get; set; } = new();
 
     private async Task Create()
     {
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            return;
-        }
-
-        var id = await Sender.Send(new CreateTripCommand
-        {
-            Title = Name
-        });
+        var id = await Sender.Send(Model);
 
         NavigationManager.NavigateTo($"/trip/{id}");
     }

@@ -6,6 +6,17 @@
 @inject ISender Sender
 
 <div class="space-y-6">
+
+    @if (_trips.Any())
+    {
+        <h1 class="text-2xl mb-4">Your Trips</h1>
+
+        @foreach (var trip in _trips)
+        {
+            <a href=@($"/trip/{trip.Id}") class="text-green-400 underline">@trip.Title</a>
+        }
+    }
+    
     <div>
         <h1 class="text-2xl mb-4">Join a trip</h1>
         <form method="post" @onsubmit="JoinTrip" @formname="join-trip-form">
@@ -21,33 +32,19 @@
     <div>
         <FlowButton Type="FlowButton.ButtonType.Link" Href="/create">Create a trip</FlowButton>
     </div>
-
-    @* <AuthorizeView> *@
-    @*     <Authorized> *@
-    @*         <h1 class="text-2xl mb-4">Your Trips</h1> *@
-    @* *@
-    @*         @if (_trips != null) *@
-    @*         { *@
-    @*             @foreach (var trip in _trips) *@
-    @*             { *@
-    @*                 <p>@trip.Title</p> *@
-    @*             } *@
-    @*         } *@
-    @*     </Authorized> *@
-    @* </AuthorizeView> *@
 </div>
 
 
 
 @code {
 
-    private IReadOnlyCollection<TripDto>? _trips;
+    private IReadOnlyCollection<TripDto> _trips = [];
 
     [SupplyParameterFromForm] private string? JoinCode { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
-            // await LoadTrips();
+        await LoadTrips();
     }
 
     private async Task LoadTrips()

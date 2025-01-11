@@ -7,8 +7,9 @@ using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Entries.Commands;
 
-public record CreateEntryCommand(string Name, Guid TripId) : IRequest
+public record CreateEntryCommand(Guid TripId) : IRequest
 {
+    public string Name { get; set; }
     public string? Description { get; set; }
 }
 

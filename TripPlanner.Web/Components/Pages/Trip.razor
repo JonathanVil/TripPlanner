@@ -1,5 +1,6 @@
 @page "/trip/{Id:guid}"
 @using MediatR
+@using TripPlanner.Application.Entries.Commands
 @using TripPlanner.Application.Trips.Queries
 
 @inject ISender Sender
@@ -22,8 +23,9 @@
             </li>
         </div>
 
-        <EditForm>
-            <InputText></InputText>
+        <EditForm Model="CreateEntryModel">
+            <InputText @bind-Value="CreateEntryModel!.Name"/>
+            <InputText @bind-Value="CreateEntryModel!.Description"/>
 
             <FlowButton Type="FlowButton.ButtonType.Submit">Add an entry</FlowButton>
         </EditForm>
@@ -36,9 +38,14 @@
 
     private TripDto? _trip;
 
+    private CreateEntryCommand? CreateEntryModel { get; set; }
+
     protected override async Task OnInitializedAsync()
     {
         // get trip
         _trip = await Sender.Send(new GetTripQuery(Id));
+
+        CreateEntryModel ??= new CreateEntryCommand(Id);
     }
+
 }
