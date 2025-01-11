@@ -1,6 +1,8 @@
 @page "/trip/{Id:guid}"
 @using MediatR
+@using Microsoft.Build.Framework
 @using TripPlanner.Application.Entries.Commands
+@using TripPlanner.Application.Trips
 @using TripPlanner.Application.Trips.Queries
 
 @inject ISender Sender
@@ -12,20 +14,29 @@
     }
     else
     {
-        <div>
+        <div class="mb-4">
 
             <h1 class="text-2xl mb-4">@_trip?.Title</h1>
+            <p>Members:</p>
             <li>
                 @foreach (var member in _trip!.Participants)
                 {
                     <ul>@member</ul>
                 }
             </li>
+
+            <p>Entries:</p>
+            <li>
+                @foreach (var entry in _trip!.Entries)
+                {
+                    <ul>@entry.CreatedBy: @entry.Name, @entry.Description</ul>
+                }
+            </li>
         </div>
 
-        <EditForm Model="CreateEntryModel">
-            <InputText @bind-Value="CreateEntryModel!.Name"/>
-            <InputText @bind-Value="CreateEntryModel!.Description"/>
+        <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
+            <InputText @bind-Value="Model.Name" class="text-black" required/>
+            <InputText @bind-Value="Model.Description" class="text-black"/>
 
             <FlowButton Type="FlowButton.ButtonType.Submit">Add an entry</FlowButton>
         </EditForm>
@@ -38,14 +49,26 @@
 
     private TripDto? _trip;
 
-    private CreateEntryCommand? CreateEntryModel { get; set; }
+    [SupplyParameterFromForm] private CreateEntryModel Model { get; set; } = new();
 
     protected override async Task OnInitializedAsync()
     {
         // get trip
         _trip = await Sender.Send(new GetTripQuery(Id));
+    }
 
-        CreateEntryModel ??= new CreateEntryCommand(Id);
+    private async Task AddEntry()
+    {
+        await Sender.Send(new CreateEntryCommand(Id, Model.Name)
+        {
+            Description = Model.Description
+        });
+    }
+
+    class CreateEntryModel
+    {
+        public string Name { get; set; }
+        public string? Description { get; set; }
     }
 
 }

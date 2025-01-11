@@ -1,15 +1,15 @@
 using Ardalis.GuardClauses;
 using FluentValidation;
-using Galerie.Application.Common.Exceptions;
+using TripPlanner.Application.Common.Exceptions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Entries.Commands;
 
-public record CreateEntryCommand(Guid TripId) : IRequest
+public record CreateEntryCommand(Guid TripId, string Name) : IRequest
 {
-    public string Name { get; set; }
     public string? Description { get; set; }
 }
 
@@ -39,7 +39,10 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
         var user = await _context.Users.FindAsync(_userId, cancellationToken);
         Guard.Against.Null(user, nameof(user));
 
-        var trip = await _context.Trips.FindAsync(request.TripId, cancellationToken);
+        var trip = await _context.Trips
+            .Include(t => t.Participants)
+            .Include(t => t.Entries)
+            .FirstOrDefaultAsync(t => t.Id == request.TripId, cancellationToken);
 
         Guard.Against.Null(trip, nameof(trip));
         if (trip.Participants.All(p => p.UserId != _userId))
