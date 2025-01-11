@@ -6,8 +6,8 @@ namespace TripPlanner.Application.Entries;
 public record EntryDto
 {
     public Guid Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public string? Description { get; init; }
+    public string Text { get; init; } = string.Empty;
+    public DateTimeOffset Created { get; init; }
     public string CreatedBy { get; init; } = string.Empty;
     public Guid TripId { get; init; }
     

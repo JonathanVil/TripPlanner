@@ -6,28 +6,49 @@
 @inject IUser CurrentUser
 
 
-<h1 class="text-2xl mb-4">Welcome!</h1>
+<div class="w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
+    <h1 class="text-2xl mb-4">Welcome!</h1>
 
-@switch (Step)
-{
-    case WizardStep.EnterName:
-        <p>Enter your name to get started!</p>
+    @switch (Step)
+    {
+        case WizardStep.EnterName:
+            <p>Enter your name to get started!</p>
 
-        <EditForm Model="Model" FormName="NameForm" OnValidSubmit="CreateUser">
-            <InputText @bind-Value="Model.Name" class="rounded text-black" required/>
-            <FlowButton Type="FlowButton.ButtonType.Submit">Start</FlowButton>
-        </EditForm>
+            <EditForm Model="Model" FormName="NameForm" OnValidSubmit="CreateUser">
+                <InputText @bind-Value="Model.Name" class="rounded text-black" required/>
+                <FlowButton Type="FlowButton.ButtonType.Submit">Start</FlowButton>
+            </EditForm>
 
-        <a href="recover" class="underline text-green-400">Already have an account?</a>
+            <a href="recover" class="underline text-green-400">Already have an account?</a>
 
-        break;
-    case WizardStep.SaveAccessKey:
-        <p>Save this access key somewhere safe!</p>
-        <code>@AccessKey</code>
-        <br/>
-        <FlowButton Href="/">Continue</FlowButton>
-        break;
-}
+            break;
+        case WizardStep.SaveAccessKey:
+            <p class="text-gray-400 mb-6">Save this access key somewhere safe!</p>
+
+            <div class="grid grid-cols-8 gap-2 w-full max-w-[23rem]">
+                <label for="access-key" class="sr-only">Access Key</label>
+                <input id="access-key" type="text"
+                       class="col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                       value="@AccessKey" disabled readonly>
+                <button data-copy-to-clipboard-target="access-key"
+                        class="col-span-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 items-center inline-flex justify-center">
+                    <span id="default-message">Copy</span>
+                    <span id="success-message" class="hidden inline-flex items-center">
+                    <svg class="w-3 h-3 text-white me-1.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                         fill="none" viewBox="0 0 16 12">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M1 5.917 5.724 10.5 15 1.5"/>
+                    </svg>
+                    Copied!
+                </span>
+                </button>
+            </div>
+
+            <br/>
+            <FlowButton Href="/">Continue</FlowButton>
+            break;
+    }
+</div>
 
 @code {
 
@@ -45,9 +66,8 @@
     {
         [Required] public string Name { get; set; }
     }
-    
-    [SupplyParameterFromForm]
-    public string AccessKey { get; set; }
+
+    [SupplyParameterFromForm] public string AccessKey { get; set; }
 
 
     private async Task CreateUser()

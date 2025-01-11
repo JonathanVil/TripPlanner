@@ -1,47 +1,101 @@
 @page "/trip/{Id:guid}"
 @using MediatR
-@using Microsoft.Build.Framework
 @using TripPlanner.Application.Entries.Commands
 @using TripPlanner.Application.Trips
 @using TripPlanner.Application.Trips.Queries
 
 @inject ISender Sender
 
-<div>
-    @if (_trip == null)
-    {
-        <p>Loading ...</p>
-    }
-    else
-    {
-        <div class="mb-4">
+@if (_trip == null)
+{
+    <p>Loading ...</p>
+}
+else
+{
+    <div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
 
-            <h1 class="text-2xl mb-4">@_trip?.Title</h1>
-            <p>Members:</p>
-            <li>
-                @foreach (var member in _trip!.Participants)
-                {
-                    <ul>@member</ul>
-                }
-            </li>
+        <h1 class="text-2xl mb-4">@_trip?.Title</h1>
+        @foreach (var member in _trip!.Participants)
+        {
+            <div class="flex items-center gap-4">
+                <div
+                    class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden  rounded-full bg-gray-600">
+                    <span class="font-medium text-gray-300">@string.Join("", member.Split(' ').Select(s => s[0]))</span>
+                </div>
+                <div class="font-medium text-white">
+                    <div>@member</div>
+                    <div class="text-sm text-gray-400">Joined in August 2014</div>
+                </div>
+            </div>
+        }
 
-            <p>Entries:</p>
-            <li>
-                @foreach (var entry in _trip!.Entries)
-                {
-                    <ul>@entry.CreatedBy: @entry.Name, @entry.Description</ul>
-                }
-            </li>
+        <p>Entries:</p>
+        <li>
+            @foreach (var entry in _trip!.Entries)
+            {
+                <div class="flex items-start gap-2.5">
+                    <div
+                        class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden  rounded-full bg-gray-600">
+                        <span class="font-medium text-gray-300">@string.Join("", entry.CreatedBy.Split(' ').Select(s => s[0]))</span>
+                    </div>
+                    <div
+                        class="flex flex-col w-full max-w-[320px] leading-1.5 p-4 border-gray-200 rounded-e-xl rounded-es-xl bg-gray-700">
+                        <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                            <span class="text-sm font-semibold text-white">@entry.CreatedBy</span>
+                            <span class="text-sm font-normal text-gray-400">@entry.Created.ToLocalTime().ToString("g")</span>
+                        </div>
+                        <p class="text-sm font-normal py-2.5 text-white">@entry.Text</p>
+                        <span class="text-sm font-normal text-gray-400">Delivered</span>
+                    </div>
+                </div>
+                <ul>@entry.CreatedBy: @entry.Text</ul>
+            }
+        </li>
+    </div>
+
+    <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
+        <div class="w-full mb-4 border rounded-lg bg-gray-700 border-gray-600">
+            <div class="px-4 py-2 rounded-t-lg bg-gray-800">
+                <label for="description" class="sr-only">Your comment</label>
+                <InputTextArea @bind-Value="Model.Comment" id="description" rows="2"
+                               class="w-full px-0 text-sm  border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400"
+                               placeholder="Write a comment..." required/>
+            </div>
+            <div class="flex items-center justify-between px-3 py-2 border-t border-gray-600">
+                <FlowButton Type="FlowButton.ButtonType.Submit">Post comment</FlowButton>
+                <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
+                    <button type="button"
+                            class="inline-flex justify-center items-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-gray-600">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                             viewBox="0 0 12 20">
+                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2"
+                                  d="M1 6v8a5 5 0 1 0 10 0V4.5a3.5 3.5 0 1 0-7 0V13a2 2 0 0 0 4 0V6"/>
+                        </svg>
+                        <span class="sr-only">Attach file</span>
+                    </button>
+                    <button type="button" class=inline-flex justify-center items-center p-2 rounded cursor-pointer
+                            text-gray-400 hover:text-white hover:bg-gray-600>
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             viewBox="0 0 16 20">
+                            <path
+                                d="M8 0a7.992 7.992 0 0 0-6.583 12.535 1 1 0 0 0 .12.183l.12.146c.112.145.227.285.326.4l5.245 6.374a1 1 0 0 0 1.545-.003l5.092-6.205c.206-.222.4-.455.578-.7l.127-.155a.934.934 0 0 0 .122-.192A8.001 8.001 0 0 0 8 0Zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6Z"/>
+                        </svg>
+                        <span class="sr-only">Set location</span>
+                    </button>
+                    <button type="button"
+                            class="inline-flex justify-center items-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-gray-600">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             viewBox="0 0 20 18">
+                            <path
+                                d="M18 0H2a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2Zm-5.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4.376 10.481A1 1 0 0 1 16 15H4a1 1 0 0 1-.895-1.447l3.5-7A1 1 0 0 1 7.468 6a.965.965 0 0 1 .9.5l2.775 4.757 1.546-1.887a1 1 0 0 1 1.618.1l2.541 4a1 1 0 0 1 .028 1.011Z"/>
+                        </svg>
+                        <span class="sr-only">Upload image</span>
+                    </button>
+                </div>
+            </div>
         </div>
-
-        <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
-            <InputText @bind-Value="Model.Name" class="text-black" required/>
-            <InputText @bind-Value="Model.Description" class="text-black"/>
-
-            <FlowButton Type="FlowButton.ButtonType.Submit">Add an entry</FlowButton>
-        </EditForm>
-    }
-</div>
+    </EditForm>
+}
 
 @code {
 
@@ -59,16 +113,18 @@
 
     private async Task AddEntry()
     {
-        await Sender.Send(new CreateEntryCommand(Id, Model.Name)
-        {
-            Description = Model.Description
-        });
+        await Sender.Send(new CreateEntryCommand(Id, Model.Comment));
+
+        // clear comment
+        Model.Comment = string.Empty;
+
+        // refresh trip
+        _trip = await Sender.Send(new GetTripQuery(Id));
     }
 
     class CreateEntryModel
     {
-        public string Name { get; set; }
-        public string? Description { get; set; }
+        public string Comment { get; set; }
     }
 
 }

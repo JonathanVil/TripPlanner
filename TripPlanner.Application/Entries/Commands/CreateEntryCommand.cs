@@ -8,16 +8,13 @@ using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Entries.Commands;
 
-public record CreateEntryCommand(Guid TripId, string Name) : IRequest
-{
-    public string? Description { get; set; }
-}
+public record CreateEntryCommand(Guid TripId, string Text) : IRequest;
 
 public class CreateEntryCommandValidator : AbstractValidator<CreateEntryCommand>
 {
     public CreateEntryCommandValidator()
     {
-        RuleFor(v => v.Name)
+        RuleFor(v => v.Text)
             .MaximumLength(200)
             .NotEmpty();
     }
@@ -52,7 +49,7 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
 
         var entity = new Entry
         {
-            Name = request.Name,
+            Text = request.Text,
             Trip = trip,
             User = user
         };

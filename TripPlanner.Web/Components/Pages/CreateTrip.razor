@@ -5,12 +5,10 @@
 @inject NavigationManager NavigationManager
 @inject ISender Sender
 
-<div class="space-y-8">
+<div class="space-y-6 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
     <div>
         <h1 class="text-2xl mb-4">Create a trip</h1>
-        <EditForm Model="Model" OnValidSubmit="Create" @formname="create-trip-form">
-            <FluentValidationValidator/>
-
+        <EditForm Model="Model" OnValidSubmit="Create" FormName="create-trip-form">
             <p class="mb-2">Start by giving the trip a name</p>
             <InputText @bind-Value="Model.Title" class="rounded text-black" maxlength="20" minlength="4" id="name"
                        required/>
@@ -18,7 +16,7 @@
         </EditForm>
     </div>
     <div>
-        <p class="mb-4">Trying to existing trip?</p>
+        <p class="mb-4">Trying to join an existing trip?</p>
         <FlowButton Type="FlowButton.ButtonType.Link" Href="/">Join a trip</FlowButton>
     </div>
 </div>
