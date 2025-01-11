@@ -40,7 +40,6 @@
 
 
 @code {
-    [CascadingParameter] public Task<AuthenticationState> AuthenticationState { get; set; } = null!;
 
     private IReadOnlyCollection<TripDto>? _trips;
 
@@ -48,11 +47,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var authState = await AuthenticationState;
-        if (authState.User.Identity is { IsAuthenticated: true })
-        {
-            await LoadTrips();
-        }
+            // await LoadTrips();
     }
 
     private async Task LoadTrips()

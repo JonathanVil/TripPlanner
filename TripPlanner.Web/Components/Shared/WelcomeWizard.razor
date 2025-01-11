@@ -5,36 +5,64 @@
 @inject NavigationManager NavigationManager
 @inject IUser CurrentUser
 
+
 <h1 class="text-2xl mb-4">Welcome!</h1>
 
-<p>Enter your name to get started!</p>
+@switch (Step)
+{
+    case WizardStep.EnterName:
+        <p>Enter your name to get started!</p>
 
-<EditForm Model="Model" FormName="CreateUser" OnValidSubmit="CreateUser">
-    <InputText @bind-Value="Model.Name" class="rounded text-black" required/>
-    <FlowButton Type="FlowButton.ButtonType.Submit">Start</FlowButton>
-</EditForm>
+        <EditForm Model="Model" FormName="NameForm" OnValidSubmit="CreateUser">
+            <InputText @bind-Value="Model.Name" class="rounded text-black" required/>
+            <FlowButton Type="FlowButton.ButtonType.Submit">Start</FlowButton>
+        </EditForm>
+
+        <a href="recover" class="underline text-indigo-500">Already have an account?</a>
+
+        break;
+    case WizardStep.SaveAccessKey:
+        <p>Save this access key somewhere safe!</p>
+        <code>@AccessKey</code>
+        <br/>
+        <FlowButton Href="/">Continue</FlowButton>
+        break;
+}
 
 @code {
 
-    [SupplyParameterFromForm]
-    private CreateUserModel Model { get; set; } = new();
-    
+    private WizardStep Step { get; set; } = WizardStep.EnterName;
+
+    enum WizardStep
+    {
+        EnterName,
+        SaveAccessKey
+    }
+
+    [SupplyParameterFromForm] private CreateUserModel Model { get; set; } = new();
+
     class CreateUserModel
     {
         [Required] public string Name { get; set; }
     }
     
+    [SupplyParameterFromForm]
+    public string AccessKey { get; set; }
+
+
     private async Task CreateUser()
     {
         // create user
         var result = await IdentityService.CreateUserAsync(Model.Name);
-        
-        if(!result.Result.Succeeded) return;
-        
-        // set user cookie
-        await CurrentUser.SetUserIdAsync(result.UserId);
 
-        // redirect to home
-        NavigationManager.NavigateTo("/");
+        if (!result.Result.Succeeded) return;
+
+        AccessKey = result.AccessKey;
+
+        // set user cookie
+        CurrentUser.SetAccessKey(AccessKey);
+
+        Step = WizardStep.SaveAccessKey;
     }
+
 }

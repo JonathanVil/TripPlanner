@@ -25,7 +25,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
 
         if (userId is not null)
         {
-            userName = await _identityService.GetUserNameAsync(userId.Value);
+            userName = await _identityService.GetUserNameAsync(userId);
         }
 
         _logger.LogInformation("Galerie Request: {Name} {@UserId} {@UserName} {@Request}",

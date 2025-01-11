@@ -26,7 +26,7 @@ public class CreateTripCommandValidator : AbstractValidator<CreateTripCommand>
 public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, Guid>
 {
     private readonly IApplicationDbContext _context;
-    private readonly Guid _userId;
+    private readonly string _userId;
 
     public CreateTripCommandHandler(IApplicationDbContext context, IUser user)
     {

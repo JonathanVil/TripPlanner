@@ -1,3 +1,4 @@
+using CrypticWizard.RandomWordGenerator;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Application.Common.Models;
 using TripPlanner.Core.Entities;
@@ -14,19 +15,39 @@ public class IdentityService : IIdentityService
         _context = context;
     }
 
-    public async Task<string?> GetUserNameAsync(Guid userId)
+    public async Task<string?> GetUserNameAsync(string userId)
     {
         var user = await _context.Users.FindAsync(userId);
         return user?.Name;
     }
 
-    public async Task<(Result Result, Guid UserId)> CreateUserAsync(string name)
+    private string GenerateAccessKey()
     {
-        var user = new User { Name = name };
+        string phrase;
+        do
+        {
+            phrase = string.Join('-', GenerateRandomPhrase());
+        } while (_context.Users.Any(u => u.Id == phrase.GetSha256Hash()));
+        
+        return phrase;
+    }
+
+    private static List<string> GenerateRandomPhrase()
+    {
+        var generator = new WordGenerator();
+        return generator.GetWords(WordGenerator.PartOfSpeech.noun, 12);
+    }
+
+    public async Task<(Result Result, string AccessKey)> CreateUserAsync(string name)
+    {
+        var accessKey = GenerateAccessKey();
+        var hash = accessKey.GetSha256Hash();
+
+        var user = new User { Name = name, Id = hash };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
 
-        return (Result.Success(), user.Id);
+        return (Result.Success(), accessKey);
     }
 
     public async Task<Result> DeleteUserAsync(Guid userId)

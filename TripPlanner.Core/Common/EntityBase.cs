@@ -6,9 +6,9 @@ public abstract class EntityBase
 {
     public Guid Id { get; set; }
     public DateTimeOffset Created { get; set; }
-    public Guid? CreatedBy { get; set; }
+    public string? CreatedBy { get; set; }
     public DateTimeOffset LastModified { get; set; }
-    public Guid? LastModifiedBy { get; set; }
+    public string? LastModifiedBy { get; set; }
     
     private readonly List<EventBase> _domainEvents = new();
 

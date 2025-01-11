@@ -25,7 +25,7 @@ public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyColl
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly Guid _userId;
+    private readonly string _userId;
 
     public GetTripsQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
     {

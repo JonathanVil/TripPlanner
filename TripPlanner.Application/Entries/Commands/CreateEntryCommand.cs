@@ -25,7 +25,7 @@ public class CreateEntryCommandValidator : AbstractValidator<CreateEntryCommand>
 public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
 {
     private readonly IApplicationDbContext _context;
-    private readonly Guid _userId;
+    private readonly string _userId;
 
     public CreateEntryCommandHandler(IApplicationDbContext context, IUser user)
     {

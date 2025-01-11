@@ -27,7 +27,7 @@ public class GetTripQueryHandler : IRequestHandler<GetTripQuery, TripDto?>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper _mapper;
-    private readonly Guid _userId;
+    private readonly string _userId;
 
     public GetTripQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
     {

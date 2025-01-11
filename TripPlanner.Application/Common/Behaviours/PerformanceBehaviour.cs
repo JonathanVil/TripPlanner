@@ -42,7 +42,7 @@ public class PerformanceBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequ
 
             if (userId is not null)
             {
-                userName = await _identityService.GetUserNameAsync(userId.Value);
+                userName = await _identityService.GetUserNameAsync(userId);
             }
 
             _logger.LogWarning("Galerie Long Running Request: {Name} ({ElapsedMilliseconds} milliseconds) {@UserId} {@UserName} {@Request}",
