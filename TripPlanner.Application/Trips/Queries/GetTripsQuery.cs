@@ -2,7 +2,7 @@ using Ardalis.GuardClauses;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
-using Galerie.Application.Common.Security;
+using TripPlanner.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;

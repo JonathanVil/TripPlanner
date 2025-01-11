@@ -1,4 +1,4 @@
-﻿namespace Galerie.Application.Common.Security;
+﻿namespace TripPlanner.Application.Common.Security;
 
 /// <summary>
 /// Specifies the class this attribute is applied to requires authorization.

@@ -1,4 +1,4 @@
-﻿namespace Galerie.Application.Common.Exceptions;
+﻿namespace TripPlanner.Application.Common.Exceptions;
 
 public class ForbiddenAccessException : Exception
 {

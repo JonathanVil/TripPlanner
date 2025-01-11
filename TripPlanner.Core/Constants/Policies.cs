@@ -1,4 +1,4 @@
-namespace Galerie.Core.Constants;
+namespace TripPlanner.Core.Constants;
 
 public abstract class Policies
 {

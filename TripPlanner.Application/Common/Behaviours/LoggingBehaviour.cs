@@ -28,7 +28,7 @@ public class LoggingBehaviour<TRequest> : IRequestPreProcessor<TRequest> where T
             userName = await _identityService.GetUserNameAsync(userId);
         }
 
-        _logger.LogInformation("Galerie Request: {Name} {@UserId} {@UserName} {@Request}",
+        _logger.LogInformation("TripPlanner Request: {Name} {@UserId} {@UserName} {@Request}",
             requestName, userId, userName, request);
     }
 }
