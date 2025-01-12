@@ -6,9 +6,9 @@ namespace TripPlanner.Core.Entities;
 public abstract class EntityBase
 {
     public Guid Id { get; set; } = Guid.NewGuid();
-    public DateTimeOffset Created { get; set; }
+    public DateTimeOffset Created { get; set; } = DateTimeOffset.UtcNow;
     public Guid? CreatedBy { get; set; }
-    public DateTimeOffset LastModified { get; set; }
+    public DateTimeOffset LastModified { get; set; } = DateTimeOffset.UtcNow;
     public Guid? LastModifiedBy { get; set; }
     
     private readonly List<EventBase> _domainEvents = new();
