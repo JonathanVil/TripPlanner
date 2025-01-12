@@ -1,8 +1,10 @@
 @page "/trip/{Id:guid}"
+@using Humanizer
 @using MediatR
 @using TripPlanner.Application.Entries.Commands
 @using TripPlanner.Application.Trips
 @using TripPlanner.Application.Trips.Queries
+@using TripPlanner.Infrastructure
 
 @inject ISender Sender
 
@@ -20,12 +22,12 @@ else
             @foreach (var member in _trip!.Participants)
             {
                 <div class="flex items-center gap-4 mb-4">
-                    @* <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden  rounded-full bg-gray-600"> *@
-                    @*     <span class="font-medium text-gray-300">@string.Join("", member.Split(' ').Select(s => s[0]))</span> *@
-                    @* </div> *@
+                    <div class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden  rounded-full bg-gray-600">
+                        <span class="font-medium text-gray-300">@(new string(member.UserName.GetInitials()))</span>
+                    </div>
                     <div class="font-medium text-white text-center">
-                        <div>@member</div>
-                        <div class="text-sm text-gray-400">Joined in August 2014</div>
+                        <div>@member.UserName</div>
+                        <div class="text-sm text-gray-400">Joined @member.JoinedOn.ToLocalTime().Humanize()</div>
                     </div>
                 </div>
             }
@@ -42,7 +44,7 @@ else
 
                     @if (entry.Comment is not null)
                     {
-                        <p class="font-normal text-gray-400">@entry.Comment</p>
+                        <p class="font-normal text-white">@entry.Comment</p>
                     }
                 </div>
                 <div>
@@ -61,9 +63,9 @@ else
                 </div>
                 </div>
 
-                <div class="flex flex-row justify-between text-gray-200">
+                <div class="flex flex-row justify-between text-gray-400">
                     <p class="text-sm">@entry.CreatedBy</p>
-                    <p class="text-sm">@entry.Created.ToLocalTime().ToString("g")</p>
+                    <p class="text-sm">@entry.Created.ToLocalTime().Humanize()</p>
                 </div>
             </div>
         }
@@ -80,7 +82,7 @@ else
                                    placeholder="Write a comment..."/>
                 </div>
                 <div class="flex items-center justify-between px-3 py-2 border-t border-gray-600">
-                    <FlowButton Type="FlowButton.ButtonType.Submit">Post comment</FlowButton>
+                    <FlowButton Type="FlowButton.ButtonType.Submit">Post suggestion</FlowButton>
                     <div class="flex ps-0 space-x-1 rtl:space-x-reverse sm:ps-2">
                         <button type="button"
                                 class="inline-flex justify-center items-center p-2 rounded cursor-pointer text-gray-400 hover:text-white hover:bg-gray-600">
