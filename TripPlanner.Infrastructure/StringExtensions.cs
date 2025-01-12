@@ -12,4 +12,9 @@ public static class StringExtensions
         var hash = sha.ComputeHash(textData);
         return Convert.ToHexString(hash);
     }
+    
+    public static char[] GetInitials(this string name)
+    {
+        return name.Split(' ').Select(s => s[0]).ToArray();
+    }
 }
