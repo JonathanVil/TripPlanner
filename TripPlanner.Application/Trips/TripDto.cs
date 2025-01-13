@@ -9,7 +9,8 @@ public record TripDto
     public Guid Id { get; init; }
     public string Title { get; init; } = string.Empty;
     public IReadOnlyCollection<ParticipationDto> Participants { get; init; } = Array.Empty<ParticipationDto>();
-    public IReadOnlyCollection<EntryDto> Entries { get; init; } = Array.Empty<EntryDto>(); 
+    public IReadOnlyCollection<EntryDto> Entries { get; init; } = Array.Empty<EntryDto>();
+    public string JoinCode { get; init; } = string.Empty;
 
     private class Mapping : Profile
     {

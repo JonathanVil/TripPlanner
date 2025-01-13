@@ -8,8 +8,15 @@ public class TripConfiguration : IEntityTypeConfiguration<Trip>
 {
     public void Configure(EntityTypeBuilder<Trip> builder)
     {
-        builder.Property(a => a.Title)
+        builder.Property(t => t.Title)
             .HasMaxLength(100)
             .IsRequired();
+
+        builder.HasIndex(t => t.JoinCode)
+            .IsUnique();
+        
+        builder.Property(t => t.JoinCode)
+            .HasMaxLength(6)
+            .IsFixedLength();
     }
 }
