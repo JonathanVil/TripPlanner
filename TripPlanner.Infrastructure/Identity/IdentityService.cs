@@ -15,15 +15,14 @@ public class IdentityService : IIdentityService
         _context = context;
     }
 
+    public bool UserExists(string userId)
+    {
+        return _context.Users.Any(u => u.Id == userId);
+    }
+
     public async Task<string?> GetUserNameAsync(string userId)
     {
         var user = await _context.Users.FindAsync(userId);
-        return user?.Name;
-    }
-    
-    public string? GetUserName(string userId)
-    {
-        var user = _context.Users.Find(userId);
         return user?.Name;
     }
 
