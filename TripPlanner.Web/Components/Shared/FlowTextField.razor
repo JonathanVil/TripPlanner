@@ -1,13 +1,14 @@
 @using System.Diagnostics.CodeAnalysis
 @using System.Linq.Expressions
-@inherits InputBase<string?>
+@inherits InputBase<string>
 
-
-<div class="mb-5">
-    <label for="@FieldIdentifier.FieldName" class="block mb-2 text-sm font-medium text-white">@Label</label>
-    <input @attributes="AdditionalAttributes" @bind="CurrentValueAsString" id="@FieldIdentifier.FieldName" class="@CssClass border text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"/>
+<label for="@FieldIdentifier.FieldName" class="mb-2 text-sm font-medium text-white">@Label</label>
+<input @attributes="AdditionalAttributes" @value="@Value" @onchange="SetValue" id="@FieldIdentifier.FieldName"
+       class="@CssClass border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"/>
+@if (Validation)
+{
     <ValidationMessage For="@ValueExpression" class="mt-2 text-sm text-red-500"/>
-</div>
+}
 
 @code {
 
@@ -17,14 +18,25 @@
         get => ValueExpression;
         set => ValueExpression = value;
     }
-    
-    [Parameter]
-    public required string Label { get; set; }
 
-    protected override bool TryParseValueFromString(string? value, [MaybeNullWhen(false)] out string? result, [NotNullWhen(false)] out string? validationErrorMessage)
+    [Parameter] public required string Label { get; set; }
+    
+    [Parameter] public bool Validation { get; set; } = true;
+    
+    [CascadingParameter]
+    private EditContext? CascadedEditContext { get; set; }
+
+    protected override bool TryParseValueFromString(string? value, out string? result, [NotNullWhen(false)] out string? validationErrorMessage)
     {
         result = value;
         validationErrorMessage = null;
         return true;
+    }
+
+    void SetValue(ChangeEventArgs e)
+    {
+        Value = e.Value?.ToString();
+        ValueChanged.InvokeAsync(Value);
+        CascadedEditContext?.NotifyFieldChanged(FieldIdentifier);
     }
 }
