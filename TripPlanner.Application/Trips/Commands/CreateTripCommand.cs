@@ -10,8 +10,8 @@ namespace TripPlanner.Application.Trips.Commands;
 public record CreateTripCommand : IRequest<Guid>
 {
     public string Title { get; set; } = null!;
-    public DateTimeOffset StartDate { get; set; }
-    public DateTimeOffset EndDate { get; set; }
+    public DateTimeOffset? StartDate { get; set; }
+    public DateTimeOffset? EndDate { get; set; }
 }
 
 public class CreateTripCommandValidator : AbstractValidator<CreateTripCommand>
@@ -20,7 +20,19 @@ public class CreateTripCommandValidator : AbstractValidator<CreateTripCommand>
     {
         RuleFor(v => v.Title)
             .MaximumLength(200)
-            .NotEmpty();
+            .WithMessage("Title must not exceed 200 characters")
+            .NotEmpty()
+            .WithMessage("Title is required");
+
+        RuleFor(v => v.StartDate)
+            .NotEmpty()
+            .WithMessage("Start date is required");
+
+        RuleFor(v => v.EndDate)
+            .NotEmpty()
+            .WithMessage("End date is required")
+            .GreaterThan(v => v.StartDate)
+            .WithMessage("End date must be after start date");
     }
 }
 

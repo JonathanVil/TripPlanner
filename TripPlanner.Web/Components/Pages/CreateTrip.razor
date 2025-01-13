@@ -9,9 +9,34 @@
     <div>
         <h1 class="text-2xl mb-4">Create a trip</h1>
         <EditForm Model="Model" OnValidSubmit="Create" FormName="create-trip-form">
-            <p class="mb-2">Start by giving the trip a name</p>
-            <InputText @bind-Value="Model.Title" class="rounded text-black" maxlength="20" minlength="4" id="name"
-                       required/>
+            <FluentValidationValidator/>
+            
+            <div class="mb-4">
+                <p class="mb-2">Start by giving the trip a name</p>
+                <InputText @bind-Value="Model.Title" class="rounded text-black" maxlength="20" minlength="4" id="name"
+                           required/>
+            </div>
+
+            <div class="mb-4">
+                <p class="mb-2">What are the dates?</p>
+                <div id="date-range-picker" class="flex items-center justify-center">
+                    <div class="relative">
+                        <InputDate @bind-Value="Model.StartDate" hidden="start-date"
+                                   class="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Select date start" Type="InputDateType.Date" required/>
+                        <ValidationMessage For="@(() => Model.StartDate)" class="text-red-500"/>
+                    </div>
+                    <span class="mx-4 text-gray-500">to</span>
+                    <div class="relative">
+                        <InputDate @bind-Value="Model.EndDate"
+                                   class="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                                   placeholder="Select date end" Type="InputDateType.Date" required/>
+                        <ValidationMessage For="@(() => Model.EndDate)" class="text-red-500"/>
+                    </div>
+                </div>
+            </div>
+
+
             <FlowButton Type="FlowButton.ButtonType.Submit">Create</FlowButton>
         </EditForm>
     </div>
@@ -23,7 +48,9 @@
 
 
 @code {
-    [SupplyParameterFromForm] private CreateTripCommand Model { get; set; } = new();
+
+    [SupplyParameterFromForm]
+    private CreateTripCommand Model { get; set; } = new();
 
     private async Task Create()
     {
