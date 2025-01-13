@@ -5,7 +5,7 @@
 @inject NavigationManager NavigationManager
 @inject ISender Sender
 
-<div class="space-y-6 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
+<div class="space-y-8 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
     <div>
         <h1 class="text-2xl mb-4">Create a trip</h1>
         <EditForm Model="Model" OnValidSubmit="Create" FormName="create-trip-form">
@@ -24,25 +24,24 @@
                         <InputDate @bind-Value="Model.StartDate" hidden="start-date"
                                    class="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Select date start" Type="InputDateType.Date" required/>
-                        <ValidationMessage For="@(() => Model.StartDate)" class="text-red-500"/>
+                        <ValidationMessage For="@(() => Model.StartDate)" class="mt-2 text-sm text-red-500"/>
                     </div>
                     <span class="mx-4 text-gray-500">to</span>
                     <div class="relative">
                         <InputDate @bind-Value="Model.EndDate"
                                    class="border text-sm rounded-lg block w-full p-2.5  bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                                    placeholder="Select date end" Type="InputDateType.Date" required/>
-                        <ValidationMessage For="@(() => Model.EndDate)" class="text-red-500"/>
+                        <ValidationMessage For="@(() => Model.EndDate)" class="mt-2 text-sm text-red-500"/>
                     </div>
                 </div>
             </div>
-
-
+            
             <FlowButton Type="FlowButton.ButtonType.Submit">Create</FlowButton>
         </EditForm>
     </div>
+    
     <div>
-        <p class="mb-4">Trying to join an existing trip?</p>
-        <FlowButton Type="FlowButton.ButtonType.Link" Href="/">Join a trip</FlowButton>
+        <p>Trying to join an existing trip?<a href="/" class="text-green-500 underline">Go back</a></p>
     </div>
 </div>
 

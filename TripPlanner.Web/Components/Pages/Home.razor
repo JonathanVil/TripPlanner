@@ -7,20 +7,21 @@
 @inject ISender Sender
 @inject NavigationManager NavigationManager
 
-<div class="space-y-6 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
+<div class="space-y-12 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
 
     @if (_trips.Any())
     {
-        <h1 class="text-2xl mb-4">Your Trips</h1>
-
-        <ul>
-            @foreach (var trip in _trips)
-            {
-                <li class="block">
-                    <a href=@($"/trip/{trip.Id}") class="text-green-400 underline">@trip.Title</a>
-                </li>
-            }
-        </ul>
+        <div>
+            <h1 class="text-2xl mb-4">Your Trips</h1>
+            <ul>
+                @foreach (var trip in _trips)
+                {
+                    <li class="block">
+                        <a href=@($"/trip/{trip.Id}") class="text-lg text-green-400 underline">@trip.Title</a>
+                    </li>
+                }
+            </ul>
+        </div>
     }
 
     <div>
@@ -38,7 +39,7 @@
 
     <div>
         <h1 class="text-2xl mb-4">Creating a new trip?</h1>
-        <p class="mb-2">Get started with creating a new trip</p>
+        <p class="mb-4">Get started with creating a new trip</p>
         <FlowButton Type="FlowButton.ButtonType.Link" Href="/create">Create a trip</FlowButton>
     </div>
 </div>
