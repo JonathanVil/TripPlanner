@@ -11,6 +11,8 @@ public record TripDto
     public IReadOnlyCollection<ParticipationDto> Participants { get; init; } = Array.Empty<ParticipationDto>();
     public IReadOnlyCollection<EntryDto> Entries { get; init; } = Array.Empty<EntryDto>();
     public string JoinCode { get; init; } = string.Empty;
+    public DateTimeOffset StartDate { get; init; }
+    public DateTimeOffset EndDate { get; init; }
 
     private class Mapping : Profile
     {

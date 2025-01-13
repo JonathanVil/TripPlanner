@@ -9,8 +9,9 @@ public record TripSummaryDto
     public int ParticipantCount { get; init; }
     public int EntryCount { get; init; }
     public string Owner { get; init; } = string.Empty;
-    public DateTimeOffset StartDate { get; init; }
     public string JoinCode { get; set; } = string.Empty;
+    public DateTimeOffset StartDate { get; init; }
+    public DateTimeOffset EndDate { get; init; }
 
     private class Mapping : Profile
     {
@@ -19,8 +20,7 @@ public record TripSummaryDto
             CreateMap<Core.Entities.Trip, TripSummaryDto>()
                 .ForMember(d => d.ParticipantCount, opt => opt.MapFrom(s => s.Participants.Count))
                 .ForMember(d => d.EntryCount, opt => opt.MapFrom(s => s.Entries.Count))
-                .ForMember(d => d.Owner, opt => opt.MapFrom(s => s.Participants.First(p => p.IsOwner).User.Name))
-                .ForMember(d => d.StartDate, opt => opt.MapFrom(s => s.Created));
+                .ForMember(d => d.Owner, opt => opt.MapFrom(s => s.Participants.First(p => p.IsOwner).User.Name));
         }
     }
 }

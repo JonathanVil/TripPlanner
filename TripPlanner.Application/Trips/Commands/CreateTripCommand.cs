@@ -2,7 +2,6 @@ using Ardalis.GuardClauses;
 using FluentValidation;
 using MediatR;
 using TripPlanner.Application.Common.Interfaces;
-using TripPlanner.Application.Trips.Queries;
 using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips.Commands;
@@ -11,6 +10,8 @@ namespace TripPlanner.Application.Trips.Commands;
 public record CreateTripCommand : IRequest<Guid>
 {
     public string Title { get; set; } = null!;
+    public DateTimeOffset StartDate { get; set; }
+    public DateTimeOffset EndDate { get; set; }
 }
 
 public class CreateTripCommandValidator : AbstractValidator<CreateTripCommand>

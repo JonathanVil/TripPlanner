@@ -8,6 +8,8 @@ public class Trip(string title) : EntityBase
     public List<Participation> Participants { get; set; } = new();
     public List<Entry> Entries { get; set; } = new();
     public string JoinCode { get; set; } = RandomString(6);
+    public DateTimeOffset StartDate { get; set; }
+    public DateTimeOffset EndDate { get; set; }
 
     private static string RandomString(int length)
     {
