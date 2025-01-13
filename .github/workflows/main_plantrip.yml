@@ -24,6 +24,17 @@ jobs:
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+        
+      - name: Install dependencies
+        working-directory: ./TripPlanner.Web
+        run: npm install
+        
+      - name: Build Tailwind CSS
+        working-directory: ./TripPlanner.Web
+        run: npx tailwindcss -i wwwroot/css/app.css -o wwwroot/css/app.min.css --minify
+
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
 
