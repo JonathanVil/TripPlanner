@@ -9,7 +9,7 @@ public record TripSummaryDto
     public int ParticipantCount { get; init; }
     public int EntryCount { get; init; }
     public string Owner { get; init; } = string.Empty;
-    public DateTime StartDate { get; init; }
+    public DateTimeOffset StartDate { get; init; }
     public string JoinCode { get; set; } = string.Empty;
 
     private class Mapping : Profile
