@@ -14,9 +14,10 @@
 }
 else if (Summary == null)
 {
-    <p>Trip not found</p>
-
-    <FlowButton>Go back</FlowButton>
+    <div>
+        <p class="mb-4">Trip not found</p>
+        <FlowButton Href="/">Go back</FlowButton>
+    </div>
 }
 else
 {
@@ -28,7 +29,7 @@ else
 
         <div class="space-x-1">
             <form method="post" @formname="confirm-join-trip" @onsubmit="Submit">
-                <AntiforgeryToken />
+                <AntiforgeryToken/>
                 <FlowButton Class="bg-green-500">Join</FlowButton>
                 <FlowButton Href="/" Type="FlowButton.ButtonType.Link" Class="bg-red-500">Cancel</FlowButton>
             </form>
@@ -58,7 +59,7 @@ else
     {
         // join trip
         var id = await Sender.Send(new JoinTripCommand(Code));
-        
+
         NavigationManager.NavigateTo($"/trip/{id}");
     }
 
