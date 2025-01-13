@@ -277,3 +277,8 @@ package-lock.json
 
 # sqlite
 identifier.sqlite
+
+# SQLite database files
+*.db
+*.db-shm
+*.db-wal
