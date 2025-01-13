@@ -7,7 +7,10 @@ using TripPlanner.Application.Common.Interfaces;
 
 namespace TripPlanner.Application.Trips.Queries;
 
-public record GetTripSummaryQuery(string JoinCode) : IRequest<TripSummaryDto?>;
+public record GetTripSummaryQuery(string JoinCode) : IRequest<TripSummaryDto?>
+{
+    public string JoinCode { get; init; } = JoinCode.ToUpper();
+}
 
 public class GetTripSummaryQueryValidator : AbstractValidator<GetTripSummaryQuery>
 {

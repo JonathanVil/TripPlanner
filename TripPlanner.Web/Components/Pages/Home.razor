@@ -5,6 +5,7 @@
 @using TripPlanner.Application.Trips.Queries
 
 @inject ISender Sender
+@inject NavigationManager NavigationManager
 
 <div class="space-y-6 w-full max-w-lg bg-gray-800  border border-gray-700 shadow rounded-lg p-5">
 
@@ -58,7 +59,8 @@
     private void JoinTrip()
     {
         if (JoinCode?.Length != 6) return;
-        Console.WriteLine("Joining trip with code: " + JoinCode);
+        
+        NavigationManager.NavigateTo($"/join/{JoinCode}");
     }
 
 }

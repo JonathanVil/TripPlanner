@@ -1,0 +1,65 @@
+@page "/join/{Code}"
+@using Humanizer
+@using MediatR
+@using TripPlanner.Application.Trips
+@using TripPlanner.Application.Trips.Commands
+@using TripPlanner.Application.Trips.Queries
+
+@inject ISender Sender
+@inject NavigationManager NavigationManager
+
+@if (_loading)
+{
+    <p>Loading ...</p>
+}
+else if (Summary == null)
+{
+    <p>Trip not found</p>
+
+    <FlowButton>Go back</FlowButton>
+}
+else
+{
+    <div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
+        <h1 class="text-3xl mb-4">@Summary.Title</h1>
+
+        <p><span class="font-semibold">@Summary.Owner</span> invites you to join <span
+                class="font-semibold">@Summary.Title</span></p>
+
+        <div class="space-x-1">
+            <form method="post" @formname="confirm-join-trip" @onsubmit="Submit">
+                <AntiforgeryToken />
+                <FlowButton Class="bg-green-500">Join</FlowButton>
+                <FlowButton Href="/" Type="FlowButton.ButtonType.Link" Class="bg-red-500">Cancel</FlowButton>
+            </form>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Parameter] public string Code { get; set; }
+
+    private bool _loading = true;
+
+    private TripSummaryDto? Summary { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        // get trip
+        var trip = await Sender.Send(new GetTripSummaryQuery(Code));
+
+        Summary = trip;
+
+        _loading = false;
+    }
+
+    private async Task Submit()
+    {
+        // join trip
+        var id = await Sender.Send(new JoinTripCommand(Code));
+        
+        NavigationManager.NavigateTo($"/trip/{id}");
+    }
+
+}
