@@ -13,10 +13,14 @@
     {
         <h1 class="text-2xl mb-4">Your Trips</h1>
 
-        @foreach (var trip in _trips)
-        {
-            <a href=@($"/trip/{trip.Id}") class="text-green-400 underline">@trip.Title</a>
-        }
+        <ul>
+            @foreach (var trip in _trips)
+            {
+                <li class="block">
+                    <a href=@($"/trip/{trip.Id}") class="text-green-400 underline">@trip.Title</a>
+                </li>
+            }
+        </ul>
     }
 
     <div>
@@ -25,7 +29,8 @@
         <form method="post" @onsubmit="JoinTrip" @formname="join-trip-form">
             <AntiforgeryToken/>
 
-            <InputText @bind-Value="JoinCode" maxlength="6" minlength="6" required class="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"/>
+            <InputText @bind-Value="JoinCode" maxlength="6" minlength="6" required
+                       class="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"/>
             <FlowButton Type="FlowButton.ButtonType.Submit">Join</FlowButton>
         </form>
     </div>
@@ -49,7 +54,6 @@
     protected override async Task OnInitializedAsync()
     {
         await LoadTrips();
-        
     }
 
     private async Task LoadTrips()
