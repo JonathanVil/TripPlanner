@@ -57,6 +57,14 @@ module.exports = {
                 'Segoe UI Emoji',
                 'Segoe UI Symbol',
                 'Noto Color Emoji'
+            ],
+            'mono': [
+                'Menlo',
+                'Monaco',
+                'Consolas',
+                'Liberation Mono',
+                'Courier New',
+                'monospace'
             ]
         },
     },
