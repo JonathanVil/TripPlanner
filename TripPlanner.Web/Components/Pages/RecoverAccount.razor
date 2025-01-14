@@ -1,0 +1,58 @@
+@page "/recover"
+@using TripPlanner.Application.Common.Interfaces
+@using TripPlanner.Web.Components.Layout
+
+@layout BaseLayout 
+
+@inject IIdentityService IdentityService
+@inject IUser User
+
+<div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
+    <h1 class="text-3xl mb-4">Recover account</h1>
+
+    <div class="space-x-1">
+        <form method="post" @formname="recover-account" @onsubmit="Submit">
+            <AntiforgeryToken/>
+
+            <div class="mb-4">
+                <p class="mb-2">Provide your access key</p>
+                <InputText @bind-Value="AccessKey"
+                           class="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                           id="access-key"
+                           required/>
+                <p class="mt-2 text-sm text-red-500">@Error</p>
+            </div>
+
+            <FlowButton Type="FlowButton.ButtonType.Submit">Recover</FlowButton>
+        </form>
+    </div>
+</div>
+
+@code {
+
+    [SupplyParameterFromForm] private string? AccessKey { get; set; }
+    private string? Error { get; set; }
+    
+    private async Task Submit()
+    {
+        if (string.IsNullOrWhiteSpace(AccessKey))
+        {
+            Error = "Access key is required";
+            return;
+        }
+
+        // validate the access key
+        var valid = await IdentityService.ValidateAccessKey(AccessKey);
+
+        if (!valid)
+        {
+            // show error
+            Error = "Invalid access key";
+            return;
+        }
+
+        // set the user
+        User.SetAccessKey(AccessKey);
+    }
+
+}
