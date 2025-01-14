@@ -6,6 +6,7 @@
 
 @inject IIdentityService IdentityService
 @inject IUser User
+@inject NavigationManager NavigationManager
 
 <div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
     <h1 class="text-3xl mb-4">Recover account</h1>
@@ -17,7 +18,7 @@
             <div class="mb-4">
                 <p class="mb-2">Provide your access key</p>
                 <InputText @bind-Value="AccessKey"
-                           class="border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
+                           class="w-full border text-sm rounded-lg p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500"
                            id="access-key"
                            required/>
                 <p class="mt-2 text-sm text-red-500">@Error</p>
@@ -53,6 +54,9 @@
 
         // set the user
         User.SetAccessKey(AccessKey);
+        
+        // navigate to the home page
+        NavigationManager.NavigateTo("/");
     }
 
 }
