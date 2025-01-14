@@ -10,4 +10,6 @@ public interface IIdentityService
     Task<(Result Result, string AccessKey)> CreateUserAsync(string userName);
 
     Task<Result> DeleteUserAsync(Guid userId);
+    
+    Task<bool> ValidateAccessKey(string accessKey);
 }

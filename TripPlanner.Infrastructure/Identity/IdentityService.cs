@@ -1,4 +1,5 @@
 using CrypticWizard.RandomWordGenerator;
+using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Application.Common.Models;
 using TripPlanner.Core.Entities;
@@ -67,6 +68,12 @@ public class IdentityService : IIdentityService
         await DeleteUserAsync(user);
 
         return Result.Success();
+    }
+
+    public async Task<bool> ValidateAccessKey(string accessKey)
+    {
+        var hash = accessKey.GetSha256Hash();
+        return await _context.Users.AnyAsync(u => u.Id == hash);
     }
 
     public async Task<Result> DeleteUserAsync(User user)
