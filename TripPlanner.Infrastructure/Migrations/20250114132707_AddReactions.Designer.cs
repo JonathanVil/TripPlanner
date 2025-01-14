@@ -12,7 +12,7 @@ using TripPlanner.Infrastructure.Data;
 namespace TripPlanner.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250114003559_AddReactions")]
+    [Migration("20250114132707_AddReactions")]
     partial class AddReactions
     {
         /// <inheritdoc />
