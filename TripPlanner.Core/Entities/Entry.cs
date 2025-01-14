@@ -8,4 +8,5 @@ public class Entry : EntityBase
     public Guid TripId { get; set; }
     public required string Title { get; set; }
     public string? Comment { get; set; }
+    public List<Reaction> Reactions = new();
 }

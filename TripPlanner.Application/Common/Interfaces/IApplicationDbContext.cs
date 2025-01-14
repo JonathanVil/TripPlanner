@@ -11,5 +11,9 @@ public interface IApplicationDbContext
     
     DbSet<Entry> Entries { get; }
     
+    DbSet<Reaction> Reactions { get; }
+    DbSet<Like> Likes { get; }
+    DbSet<Dislike> Dislikes { get; }
+    
     Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }
