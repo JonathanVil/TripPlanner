@@ -1,33 +1,17 @@
 ﻿@using TripPlanner.Application.Common.Interfaces
-@inherits LayoutComponentBase
+@inherits BaseLayout
 
 @inject IUser CurrentUser
 @inject IIdentityService IdentityService
 
-<div class="antialiased text-white bg-slate-800 min-h-screen">
-    @* <TopBar/> *@
-    @* *@
-    @* <SideBar/> *@
-
-    <PageTitle>Trip Planner</PageTitle>
-
-    <main class="grid place-items-center min-h-screen text-center">
-        @if (_userId == null)
-        {
-            <WelcomeWizard/>
-        }
-        else
-        {
-            @Body
-        }
-    </main>
-</div>
-
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>
+@if (_userId == null)
+{
+    <WelcomeWizard/>
+}
+else
+{
+    @Body
+}
 
 @code {
     private string? _userId;
