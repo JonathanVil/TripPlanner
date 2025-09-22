@@ -10,13 +10,17 @@
     <ItemGroup>
         <PackageReference Include="Blazored.FluentValidation" Version="2.2.0" />
         <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.0"/>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0"/>
-        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="9.0.8" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\TripPlanner.Core\TripPlanner.Core.csproj" />
       <ProjectReference Include="..\TripPlanner.Infrastructure\TripPlanner.Infrastructure.csproj" />
+      <ProjectReference Include="..\TripPlanner.ServiceDefaults\TripPlanner.ServiceDefaults.csproj" />
     </ItemGroup>
 </Project>
