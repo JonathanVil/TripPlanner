@@ -19,9 +19,6 @@ public static class DependencyInjection
 
         services.AddHttpContextAccessor();
 
-        services.AddHealthChecks()
-            .AddDbContextCheck<ApplicationDbContext>();
-
         services.AddBlazoredLocalStorage();
 
         return services;

@@ -8,7 +8,7 @@ public record EntryDto
     public Guid Id { get; init; }
     public string Title { get; init; } = string.Empty;
     public string? Comment { get; init; }
-    public DateTimeOffset Created { get; init; }
+    public DateTime Created { get; init; }
     public string CreatedBy { get; init; } = string.Empty;
     public Guid TripId { get; init; }
     

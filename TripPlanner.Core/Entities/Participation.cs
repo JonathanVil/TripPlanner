@@ -6,6 +6,6 @@ public class Participation
     public Guid TripId { get; set; }
     public virtual User User { get; set; } = null!;
     public virtual Trip Trip { get; set; } = null!;
-    public DateTimeOffset JoinedOn { get; set; } = DateTimeOffset.UtcNow;
+    public DateTime JoinedOn { get; set; } = DateTime.UtcNow;
     public bool IsOwner { get; set; }
 }

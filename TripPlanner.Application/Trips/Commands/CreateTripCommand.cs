@@ -10,8 +10,8 @@ namespace TripPlanner.Application.Trips.Commands;
 public record CreateTripCommand : IRequest<Guid>
 {
     public string Title { get; set; } = null!;
-    public DateTimeOffset? StartDate { get; set; }
-    public DateTimeOffset? EndDate { get; set; }
+    public DateTime? StartDate { get; set; }
+    public DateTime? EndDate { get; set; }
 }
 
 public class CreateTripCommandValidator : AbstractValidator<CreateTripCommand>
@@ -49,7 +49,7 @@ public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, Guid>
 
     public async Task<Guid> Handle(CreateTripCommand request, CancellationToken cancellationToken)
     {
-        var user = await _context.Users.FindAsync(_userId, cancellationToken);
+        var user = await _context.Users.FindAsync([_userId], cancellationToken: cancellationToken);
 
         Guard.Against.Null(user, nameof(user));
         

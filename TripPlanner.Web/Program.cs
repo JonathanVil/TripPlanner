@@ -15,7 +15,7 @@ builder.Services.AddRazorComponents()
 // builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-builder.AddNpgsqlDbContext<ApplicationDbContext>(connectionName: "tripplanner-db");
+builder.AddNpgsqlDbContext<ApplicationDbContext>("tripplanner-db");
 builder.Services.AddWebServices(builder.Configuration);
 
 var app = builder.Build();
@@ -25,7 +25,7 @@ app.MapDefaultEndpoints();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    await app.InitializeDatabaseAsync(useMigrations: false);
+    await app.InitializeDatabaseAsync();
 }
 else
 {

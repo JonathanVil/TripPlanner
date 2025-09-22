@@ -6,7 +6,7 @@ namespace TripPlanner.Application.Trips;
 public record ParticipationDto
 {
     public string UserName { get; init; } = string.Empty;
-    public DateTimeOffset JoinedOn { get; init; }
+    public DateTime JoinedOn { get; init; }
     public bool IsOwner { get; init; }
 
     private class Mapping : Profile
