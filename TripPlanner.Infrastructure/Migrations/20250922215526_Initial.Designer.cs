@@ -2,9 +2,9 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TripPlanner.Infrastructure.Data;
 
 #nullable disable
@@ -12,50 +12,50 @@ using TripPlanner.Infrastructure.Data;
 namespace TripPlanner.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250114132707_AddReactions")]
-    partial class AddReactions
+    [Migration("20250922215526_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("TripPlanner.Core.Entities.Entry", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TripId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -69,16 +69,16 @@ namespace TripPlanner.Infrastructure.Migrations
             modelBuilder.Entity("TripPlanner.Core.Entities.Participation", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("TripId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsOwner")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
-                    b.Property<DateTimeOffset>("JoinedOn")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("JoinedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("UserId", "TripId");
 
@@ -91,31 +91,31 @@ namespace TripPlanner.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                        .HasColumnType("character varying(8)");
 
                     b.Property<Guid>("EntryId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -134,36 +134,36 @@ namespace TripPlanner.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("EndDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("JoinCode")
                         .IsRequired()
                         .HasMaxLength(6)
-                        .HasColumnType("nchar(6)")
+                        .HasColumnType("character(6)")
                         .IsFixedLength();
 
-                    b.Property<DateTimeOffset>("LastModified")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid?>("LastModifiedBy")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
-                    b.Property<DateTimeOffset>("StartDate")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -176,14 +176,14 @@ namespace TripPlanner.Infrastructure.Migrations
             modelBuilder.Entity("TripPlanner.Core.Entities.User", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
-                    b.Property<DateTimeOffset>("Created")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
