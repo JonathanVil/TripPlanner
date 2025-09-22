@@ -1,6 +1,6 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var postgres = builder.AddPostgres("postgres")
+var postgres = builder.AddPostgres("tripplanner-postgres")
     .WithPgAdmin();
 var database = postgres.AddDatabase("tripplanner-db");
 
