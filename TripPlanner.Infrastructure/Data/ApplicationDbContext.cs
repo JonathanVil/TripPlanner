@@ -11,8 +11,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Trip> Trips => Set<Trip>();
     public DbSet<Entry> Entries => Set<Entry>();
     public DbSet<Reaction> Reactions => Set<Reaction>();
-    public DbSet<Like> Likes => Set<Like>();
-    public DbSet<Dislike> Dislikes => Set<Dislike>();
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
