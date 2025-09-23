@@ -5,6 +5,7 @@ var postgres = builder.AddPostgres("tripplanner-postgres")
 var database = postgres.AddDatabase("tripplanner-db");
 
 builder.AddProject<Projects.TripPlanner_Web>("tripplanner-web")
-    .WithReference(database);
+    .WithReference(database)
+    .WaitFor(database);
 
 builder.Build().Run();
