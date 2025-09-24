@@ -1,4 +1,4 @@
-using AutoMapper;
+using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Application.Entries;
 using TripPlanner.Core.Entities;
 
@@ -8,17 +8,26 @@ public record TripDto
 {
     public Guid Id { get; init; }
     public string Title { get; init; } = string.Empty;
-    public IReadOnlyCollection<ParticipationDto> Participants { get; init; } = Array.Empty<ParticipationDto>();
-    public IReadOnlyCollection<EntryDto> Entries { get; init; } = Array.Empty<EntryDto>();
+    public IReadOnlyCollection<ParticipationDto> Participants { get; init; } = [];
+    public IReadOnlyCollection<EntryDto> Entries { get; init; } = [];
     public string JoinCode { get; init; } = string.Empty;
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
+}
 
-    private class Mapping : Profile
+public class TripMapper(IMapper<Entry, EntryDto> entryMapper, IMapper<Participation, ParticipationDto> participationMapper) : IMapper<Trip, TripDto>
+{
+    public TripDto Map(Trip from)
     {
-        public Mapping()
+        return new TripDto
         {
-            CreateMap<Trip, TripDto>();
-        }
+            Id = from.Id,
+            Title = from.Title,
+            Participants = from.Participants.Select(participationMapper.Map).ToArray(),
+            Entries = from.Entries.Select(entryMapper.Map).ToArray(),
+            JoinCode = from.JoinCode,
+            StartDate = from.StartDate,
+            EndDate = from.EndDate
+        };
     }
 }

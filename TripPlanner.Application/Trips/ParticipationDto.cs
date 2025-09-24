@@ -1,4 +1,4 @@
-using AutoMapper;
+using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips;
@@ -8,13 +8,17 @@ public record ParticipationDto
     public string UserName { get; init; } = string.Empty;
     public DateTime JoinedOn { get; init; }
     public bool IsOwner { get; init; }
+}
 
-    private class Mapping : Profile
+public class ParticipationMapper : IMapper<Participation, ParticipationDto>
+{
+    public ParticipationDto Map(Participation from)
     {
-        public Mapping()
+        return new ParticipationDto
         {
-            CreateMap<Participation, ParticipationDto>()
-                .ForMember(d => d.UserName, o => o.MapFrom(s => s.User.Name));
-        }
+            UserName = from.User.Name,
+            JoinedOn = from.JoinedOn,
+            IsOwner = from.IsOwner
+        };
     }
 }
