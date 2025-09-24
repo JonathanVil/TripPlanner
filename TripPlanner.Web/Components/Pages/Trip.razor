@@ -2,9 +2,13 @@
 @using Humanizer
 @using MediatR
 @using TripPlanner.Application.Entries.Commands
+@using TripPlanner.Application.Reactions.Commands
 @using TripPlanner.Application.Trips
 @using TripPlanner.Application.Trips.Queries
+@using TripPlanner.Core.Enums
 @using TripPlanner.Infrastructure
+
+@rendermode InteractiveServer
 
 @inject ISender Sender
 
@@ -17,7 +21,7 @@ else
     <div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
 
         <h1 class="text-3xl mb-4">@_trip?.Title</h1>
-        
+
         <code>@_trip?.JoinCode</code>
 
         <div class="flex flex-col items-center mb-4">
@@ -51,7 +55,7 @@ else
                         }
                     </div>
                     <div>
-                        <button type="button" class="">
+                        <button type="button" @onclick="() => ToggleReaction(entry.Id, ReactionType.Like)">
                             <svg class="w-6 h-6 stroke-1 stroke-green-500 fill-none hover:fill-green-500"
                                  aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24">
@@ -61,8 +65,9 @@ else
                             </svg>
                             <span class="sr-only">Upvote</span>
                         </button>
-                        <button type="button" class="">
-                            <svg class="w-6 h-6 stroke-1 stroke-red-600 fill-none hover:fill-red-600" aria-hidden="true"
+                        <button type="button" @onclick="() => ToggleReaction(entry.Id, ReactionType.Dislike)">
+                            <svg class="w-6 h-6 stroke-1 stroke-red-600 fill-none hover:fill-red-600"
+                                 aria-hidden="true"
                                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                                 <path fill-rule="evenodd"
                                       d="M8.97 14.316H5.004c-.322 0-.64-.08-.925-.232a2.022 2.022 0 0 1-.717-.645 2.108 2.108 0 0 1-.242-1.883l2.36-7.201C5.769 3.54 5.96 3 7.365 3c2.072 0 4.276.678 6.156 1.256.473.145.925.284 1.35.404h.114v9.862a25.485 25.485 0 0 0-4.238 5.514c-.197.376-.516.67-.901.83a1.74 1.74 0 0 1-1.21.048 1.79 1.79 0 0 1-.96-.757 1.867 1.867 0 0 1-.269-1.211l1.562-4.63ZM19.822 14H17V6a2 2 0 1 1 4 0v6.823c0 .65-.527 1.177-1.177 1.177Z"
@@ -164,6 +169,11 @@ else
     {
         public string Title { get; set; }
         public string? Comment { get; set; }
+    }
+
+    private async Task ToggleReaction(Guid entryId, ReactionType reactionType)
+    {
+        await Sender.Send(new ToggleReactionCommand(entryId, reactionType));
     }
 
 }
