@@ -7,11 +7,9 @@
 
 @inject ISender Sender
 
-<div class="block items-center max-w-sm p-6 border rounded-lg shadow bg-gray-700 border-gray-600 text-left">
+<div class="block space-y-4 items-center max-w-sm p-6 border rounded-lg shadow bg-gray-700 border-gray-600 text-left">
     <div class="flex flex-row justify-between">
-
         <div>
-
             <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">@Model.Title</h5>
 
             @if (Model.Comment is not null)
@@ -24,14 +22,13 @@
 
     <div class="flex flex-row justify-between text-gray-400">
         <p class="text-sm">@Model.CreatedBy</p>
-        <p class="text-sm">@Model.Created.ToLocalTime().Humanize()</p>
-    </div>
-    
-    <div>
         @if (Model.IsOwner)
         {
-            <DeleteIconButton OnDelete="Delete"/>
+            <DeleteButton OnDelete="Delete">
+                <p class="text-sm cursor-pointer underline">Delete</p>
+            </DeleteButton>
         }
+        <p class="text-sm">@Model.Created.ToLocalTime().Humanize()</p>
     </div>
 </div>
 
