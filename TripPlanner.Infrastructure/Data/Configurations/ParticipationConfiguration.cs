@@ -10,12 +10,6 @@ public class ParticipationConfiguration : IEntityTypeConfiguration<Participation
     {
         builder.HasKey(p => new { p.UserId, p.TripId });
 
-        // builder.HasOne<ApplicationUser>(p => p.User)
-        //     .WithMany(u => u.Participations)
-        //     .HasForeignKey(p => p.UserId);
-        //
-        // builder.HasOne<Trip>(p => p.Trip)
-        //     .WithMany(t => t.Participants)
-        //     .HasForeignKey(p => p.TripId);
+        builder.Navigation(e => e.User).AutoInclude(); // auto include user
     }
 }
