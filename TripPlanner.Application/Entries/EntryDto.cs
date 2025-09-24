@@ -11,6 +11,7 @@ public record EntryDto
     public string? Comment { get; init; }
     public DateTime Created { get; init; }
     public string CreatedBy { get; init; } = string.Empty;
+    public bool IsOwner { get; init; }
     public Guid TripId { get; init; }
 
     public Dictionary<ReactionType, int> Reactions { get; set; } = [];
@@ -28,6 +29,7 @@ public class EntryMapper(IUser? user) : IMapper<Entry, EntryDto>
             Comment = entry.Comment,
             Created = entry.Created,
             CreatedBy = entry.User.Name,
+            IsOwner = entry.User.Id == user?.Id,
             TripId = entry.TripId,
             Reactions = entry.Reactions.CountBy(r => r.Type).ToDictionary(),
             UserOwnReactions = user != null

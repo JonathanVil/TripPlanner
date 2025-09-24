@@ -1,6 +1,7 @@
 @using Humanizer
 @using MediatR
 @using TripPlanner.Application.Entries
+@using TripPlanner.Application.Entries.Commands
 @using TripPlanner.Application.Reactions.Commands
 @using TripPlanner.Core.Enums
 
@@ -18,21 +19,35 @@
                 <p class="font-normal text-white">@Model.Comment</p>
             }
         </div>
-        <EntryReactions @bind-OwnReactions="Model.UserOwnReactions" @bind-ReactionCounts="Model.Reactions" OnToggleReaction="rt => ToggleReaction(Model, rt)"/>
+        <EntryReactions @bind-OwnReactions="Model.UserOwnReactions" @bind-ReactionCounts="Model.Reactions" OnToggleReaction="rt => ToggleReaction(rt)"/>
     </div>
 
     <div class="flex flex-row justify-between text-gray-400">
         <p class="text-sm">@Model.CreatedBy</p>
         <p class="text-sm">@Model.Created.ToLocalTime().Humanize()</p>
     </div>
+    
+    <div>
+        @if (Model.IsOwner)
+        {
+            <DeleteIconButton OnDelete="Delete"/>
+        }
+    </div>
 </div>
 
 
 @code {
     [Parameter] public required EntryDto Model { get; set; }
+    [Parameter] public EventCallback OnRemove { get; set; }
     
-    private async Task ToggleReaction(EntryDto entry, ReactionType reactionType)
+    private async Task ToggleReaction(ReactionType reactionType)
     {
-        await Sender.Send(new ToggleReactionCommand(entry.Id, reactionType));
+        await Sender.Send(new ToggleReactionCommand(Model.Id, reactionType));
+    }
+
+    private async Task Delete()
+    {
+        await Sender.Send(new DeleteEntryCommand(Model.Id));
+        await OnRemove.InvokeAsync();
     }
 }

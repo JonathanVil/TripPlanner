@@ -40,7 +40,7 @@ else
 
         @foreach (var entry in _trip!.Entries)
         {
-            <Entry Model="entry"/>
+            <Entry Model="entry" OnRemove="() => _trip.Entries.Remove(entry)"/>
         }
 
         <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
