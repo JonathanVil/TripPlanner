@@ -1,12 +1,9 @@
 @page "/trip/{Id:guid}"
 @using Humanizer
 @using MediatR
-@using TripPlanner.Application.Entries
 @using TripPlanner.Application.Entries.Commands
-@using TripPlanner.Application.Reactions.Commands
 @using TripPlanner.Application.Trips
 @using TripPlanner.Application.Trips.Queries
-@using TripPlanner.Core.Enums
 @using TripPlanner.Infrastructure
 
 @rendermode InteractiveServer
@@ -43,26 +40,7 @@ else
 
         @foreach (var entry in _trip!.Entries)
         {
-            <div class="block items-center max-w-sm p-6 border rounded-lg shadow bg-gray-700 border-gray-600 text-left">
-                <div class="flex flex-row justify-between">
-
-                    <div>
-
-                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">@entry.Title</h5>
-
-                        @if (entry.Comment is not null)
-                        {
-                            <p class="font-normal text-white">@entry.Comment</p>
-                        }
-                    </div>
-                    <EntryReactions @bind-OwnReactions="entry.UserOwnReactions" @bind-ReactionCounts="entry.Reactions" OnToggleReaction="rt => ToggleReaction(entry, rt)"/>
-                </div>
-
-                <div class="flex flex-row justify-between text-gray-400">
-                    <p class="text-sm">@entry.CreatedBy</p>
-                    <p class="text-sm">@entry.Created.ToLocalTime().Humanize()</p>
-                </div>
-            </div>
+            <Entry Model="entry"/>
         }
 
         <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
@@ -149,11 +127,6 @@ else
     {
         public string Title { get; set; }
         public string? Comment { get; set; }
-    }
-
-    private async Task ToggleReaction(EntryDto entry, ReactionType reactionType)
-    {
-        await Sender.Send(new ToggleReactionCommand(entry.Id, reactionType));
     }
 
 }

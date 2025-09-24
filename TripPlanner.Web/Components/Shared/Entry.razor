@@ -1,0 +1,38 @@
+@using Humanizer
+@using MediatR
+@using TripPlanner.Application.Entries
+@using TripPlanner.Application.Reactions.Commands
+@using TripPlanner.Core.Enums
+
+@inject ISender Sender
+
+<div class="block items-center max-w-sm p-6 border rounded-lg shadow bg-gray-700 border-gray-600 text-left">
+    <div class="flex flex-row justify-between">
+
+        <div>
+
+            <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">@Model.Title</h5>
+
+            @if (Model.Comment is not null)
+            {
+                <p class="font-normal text-white">@Model.Comment</p>
+            }
+        </div>
+        <EntryReactions @bind-OwnReactions="Model.UserOwnReactions" @bind-ReactionCounts="Model.Reactions" OnToggleReaction="rt => ToggleReaction(Model, rt)"/>
+    </div>
+
+    <div class="flex flex-row justify-between text-gray-400">
+        <p class="text-sm">@Model.CreatedBy</p>
+        <p class="text-sm">@Model.Created.ToLocalTime().Humanize()</p>
+    </div>
+</div>
+
+
+@code {
+    [Parameter] public required EntryDto Model { get; set; }
+    
+    private async Task ToggleReaction(EntryDto entry, ReactionType reactionType)
+    {
+        await Sender.Send(new ToggleReactionCommand(entry.Id, reactionType));
+    }
+}
