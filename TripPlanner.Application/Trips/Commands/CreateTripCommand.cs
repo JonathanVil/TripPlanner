@@ -55,8 +55,11 @@ public class CreateTripCommandHandler : IRequestHandler<CreateTripCommand, Guid>
         
         Guard.Against.Null(request.StartDate, nameof(request.StartDate));
         Guard.Against.Null(request.EndDate, nameof(request.EndDate));
+        
+        request.StartDate = DateTime.SpecifyKind(request.StartDate.Value, DateTimeKind.Utc);
+        request.EndDate = DateTime.SpecifyKind(request.EndDate.Value, DateTimeKind.Utc);
 
-        var entity = new Trip(request.Title, request.StartDate.Value.ToUniversalTime(), request.EndDate.Value.ToUniversalTime());
+        var entity = new Trip(request.Title, request.StartDate.Value, request.EndDate.Value);
         entity.Participants.Add(new Participation
         {
             UserId = _userId,
