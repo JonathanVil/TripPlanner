@@ -8,8 +8,8 @@ public record TripDto
 {
     public Guid Id { get; init; }
     public string Title { get; init; } = string.Empty;
-    public IReadOnlyCollection<ParticipationDto> Participants { get; init; } = [];
-    public IReadOnlyCollection<EntryDto> Entries { get; init; } = [];
+    public List<ParticipationDto> Participants { get; init; } = [];
+    public List<EntryDto> Entries { get; init; } = [];
     public string JoinCode { get; init; } = string.Empty;
     public DateTime StartDate { get; init; }
     public DateTime EndDate { get; init; }
@@ -23,8 +23,8 @@ public class TripMapper(IMapper<Entry, EntryDto> entryMapper, IMapper<Participat
         {
             Id = from.Id,
             Title = from.Title,
-            Participants = from.Participants.Select(participationMapper.Map).ToArray(),
-            Entries = from.Entries.Select(entryMapper.Map).ToArray(),
+            Participants = from.Participants.Select(participationMapper.Map).ToList(),
+            Entries = from.Entries.Select(entryMapper.Map).ToList(),
             JoinCode = from.JoinCode,
             StartDate = from.StartDate,
             EndDate = from.EndDate

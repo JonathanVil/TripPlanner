@@ -10,7 +10,7 @@ using TripPlanner.Core.Entities;
 namespace TripPlanner.Application.Trips.Queries;
 
 [Authorize]
-public record GetTripsQuery : IRequest<IReadOnlyCollection<TripDto>>
+public record GetTripsQuery : IRequest<List<TripDto>>
 {
 }
 
@@ -21,7 +21,7 @@ public class GetTripsQueryValidator : AbstractValidator<GetTripsQuery>
     }
 }
 
-public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyCollection<TripDto>>
+public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, List<TripDto>>
 {
     private readonly IApplicationDbContext _context;
     private readonly IMapper<Trip, TripDto> _mapper;
@@ -34,7 +34,7 @@ public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyColl
         _userId = Guard.Against.Null(user.Id);
     }
 
-    public async Task<IReadOnlyCollection<TripDto>> Handle(GetTripsQuery request, CancellationToken cancellationToken)
+    public async Task<List<TripDto>> Handle(GetTripsQuery request, CancellationToken cancellationToken)
     {
         var trips = await _context.Trips
             .AsNoTracking()
@@ -43,6 +43,6 @@ public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyColl
             .Where(t => t.Participants.Any(p => p.UserId == _userId))
             .ToListAsync(cancellationToken: cancellationToken);
 
-        return _mapper.Map(trips).ToImmutableList();
+        return _mapper.Map(trips).ToList();
     }
 }
