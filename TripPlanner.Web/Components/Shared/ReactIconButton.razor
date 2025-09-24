@@ -1,0 +1,16 @@
+<button type="button" @onclick="() => OnClick.InvokeAsync()">
+    <svg class=@($"{Class} w-6 h-6 stroke-1 str stroke-current hover:fill-current {(Toggled ? "fill-current" : "fill-none")}")
+         aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+         viewBox="0 0 24 24">
+        @ChildContent
+    </svg>
+    @Count
+</button>
+
+@code {
+    [Parameter] public required int Count { get; set; }
+    [Parameter] public bool Toggled { get; set; }
+    [Parameter] public required RenderFragment ChildContent { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public required string Class { get; set; }
+}

@@ -13,8 +13,8 @@ public record EntryDto
     public string CreatedBy { get; init; } = string.Empty;
     public Guid TripId { get; init; }
 
-    public Dictionary<ReactionType, int> Reactions { get; init; } = [];
-    public IReadOnlyCollection<ReactionType> UserOwnReactions { get; init; } = [];
+    public Dictionary<ReactionType, int> Reactions { get; set; } = [];
+    public HashSet<ReactionType> UserOwnReactions { get; set; } = [];
 }
 
 public class EntryMapper(IUser? user) : IMapper<Entry, EntryDto>
@@ -31,7 +31,7 @@ public class EntryMapper(IUser? user) : IMapper<Entry, EntryDto>
             TripId = entry.TripId,
             Reactions = entry.Reactions.CountBy(r => r.Type).ToDictionary(),
             UserOwnReactions = user != null
-                ? entry.Reactions.Where(r => r.UserId == user?.Id).Select(r => r.Type).ToArray()
+                ? entry.Reactions.Where(r => r.UserId == user?.Id).Select(r => r.Type).ToHashSet()
                 : []
         };
     }
