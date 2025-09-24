@@ -18,7 +18,11 @@ else
 {
     <div class="space-y-6 w-full max-w-3xl bg-gray-800 border border-gray-700 shadow rounded-lg p-5 mb-6">
 
-        <h1 class="text-3xl mb-4">@_trip?.Title</h1>
+        <div class="mb-4">
+            <h1 class="text-3xl">@_trip?.Title</h1>
+            <p class="text-lg">@Duration!.Value.Humanize()</p>
+            <p class="">From @_trip!.StartDate.ToString("dddd dd MMMM") until @_trip!.EndDate.ToString("dddd dd MMMM")</p>
+        </div>
 
         <code>@_trip?.JoinCode</code>
 
@@ -102,6 +106,8 @@ else
     private TripDto? _trip;
 
     [SupplyParameterFromForm] private CreateEntryModel Model { get; set; } = new();
+
+    private TimeSpan? Duration => _trip?.EndDate.Subtract(_trip.StartDate);
 
     protected override async Task OnInitializedAsync()
     {
