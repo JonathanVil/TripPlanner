@@ -14,7 +14,7 @@ builder.Services.AddRazorComponents()
 
 // builder.Services.AddKeyVaultIfConfigured(builder.Configuration);
 builder.Services.AddApplicationServices();
-builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddInfrastructureServices();
 builder.AddNpgsqlDbContext<ApplicationDbContext>("tripplanner-db");
 builder.Services.AddWebServices(builder.Configuration);
 

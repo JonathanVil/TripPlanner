@@ -1,6 +1,5 @@
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using TripPlanner.Application.Common.Interfaces;
 using TripPlanner.Infrastructure.Data;
@@ -10,13 +9,8 @@ namespace TripPlanner.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,
-        IConfiguration configuration)
+    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        Guard.Against.Null(connectionString, message: "Connection string 'DefaultConnection' not found.");
-
         services.AddScoped<ISaveChangesInterceptor, AuditableEntityInterceptor>();
         services.AddScoped<ISaveChangesInterceptor, DispatchDomainEventsInterceptor>();
 

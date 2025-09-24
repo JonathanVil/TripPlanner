@@ -7,8 +7,7 @@ if (builder.ExecutionContext.IsPublishMode)
 }
 else
 {
-    postgres = builder.AddPostgres("tripplanner-postgres")
-        .WithPgAdmin(configureContainer: resourceBuilder => resourceBuilder.WithHostPort(18123))
+    postgres = builder.AddPostgres("tripplanner-postgres", port: 56861)
         .WithDataVolume();
 }
 
