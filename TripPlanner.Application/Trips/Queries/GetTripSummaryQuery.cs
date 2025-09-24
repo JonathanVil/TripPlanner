@@ -1,9 +1,8 @@
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips.Queries;
 
@@ -23,9 +22,9 @@ public class GetTripSummaryQueryValidator : AbstractValidator<GetTripSummaryQuer
 public class GetTripSummaryQueryHandler : IRequestHandler<GetTripSummaryQuery, TripSummaryDto?>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IMapper<Trip, TripSummaryDto> _mapper;
 
-    public GetTripSummaryQueryHandler(IApplicationDbContext context, IMapper mapper)
+    public GetTripSummaryQueryHandler(IApplicationDbContext context, IMapper<Trip, TripSummaryDto> mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -36,9 +35,10 @@ public class GetTripSummaryQueryHandler : IRequestHandler<GetTripSummaryQuery, T
         var trip = await _context.Trips
             .AsNoTracking()
             .Include(t => t.Participants)
-            .ProjectTo<TripSummaryDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(t => t.JoinCode == request.JoinCode, cancellationToken: cancellationToken);
 
-        return trip;
+        if (trip == null) return null;
+        
+        return _mapper.Map(trip);
     }
 }

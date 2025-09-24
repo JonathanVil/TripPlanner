@@ -15,7 +15,7 @@ public record TripSummaryDto
     public DateTime EndDate { get; init; }
 }
 
-public class TripSummaryMapper(IMapper<Participation, ParticipationDto> participationMapper) : IMapper<Trip, TripSummaryDto>
+public class TripSummaryMapper : IMapper<Trip, TripSummaryDto>
 {
     public TripSummaryDto Map(Trip from)
     {

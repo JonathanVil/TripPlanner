@@ -1,11 +1,11 @@
+using System.Collections.Immutable;
 using Ardalis.GuardClauses;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using TripPlanner.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips.Queries;
 
@@ -24,10 +24,10 @@ public class GetTripsQueryValidator : AbstractValidator<GetTripsQuery>
 public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyCollection<TripDto>>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IMapper<Trip, TripDto> _mapper;
     private readonly string _userId;
 
-    public GetTripsQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
+    public GetTripsQueryHandler(IApplicationDbContext context, IMapper<Trip, TripDto> mapper, IUser user)
     {
         _context = context;
         _mapper = mapper;
@@ -40,9 +40,8 @@ public class GetTripsQueryHandler : IRequestHandler<GetTripsQuery, IReadOnlyColl
             .AsNoTracking()
             .Include(t => t.Participants)
             .Where(t => t.Participants.Any(p => p.UserId == _userId))
-            .ProjectTo<TripDto>(_mapper.ConfigurationProvider)
             .ToListAsync(cancellationToken: cancellationToken);
-        
-        return trips;
+
+        return _mapper.Map(trips).ToImmutableList();
     }
 }

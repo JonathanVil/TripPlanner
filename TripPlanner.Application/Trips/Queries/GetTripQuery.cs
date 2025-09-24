@@ -1,11 +1,10 @@
 using Ardalis.GuardClauses;
-using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using TripPlanner.Application.Common.Security;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using TripPlanner.Application.Common.Interfaces;
+using TripPlanner.Core.Entities;
 
 namespace TripPlanner.Application.Trips.Queries;
 
@@ -23,10 +22,10 @@ public class GetTripQueryValidator : AbstractValidator<GetTripQuery>
 public class GetTripQueryHandler : IRequestHandler<GetTripQuery, TripDto?>
 {
     private readonly IApplicationDbContext _context;
-    private readonly IMapper _mapper;
+    private readonly IMapper<Trip, TripDto> _mapper;
     private readonly string _userId;
 
-    public GetTripQueryHandler(IApplicationDbContext context, IMapper mapper, IUser user)
+    public GetTripQueryHandler(IApplicationDbContext context, IMapper<Trip, TripDto> mapper, IUser user)
     {
         _context = context;
         _mapper = mapper;
@@ -39,9 +38,10 @@ public class GetTripQueryHandler : IRequestHandler<GetTripQuery, TripDto?>
             .AsNoTracking()
             .Include(t => t.Participants)
             .Where(t => t.Participants.Any(p => p.UserId == _userId))
-            .ProjectTo<TripDto>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync(t => t.Id == request.Id, cancellationToken: cancellationToken);
 
-        return trip;
+        if (trip == null) return null;
+        
+        return _mapper.Map(trip);
     }
 }
