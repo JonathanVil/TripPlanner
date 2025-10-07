@@ -11,6 +11,9 @@ namespace TripPlanner.Application.Entries.Commands;
 public record CreateEntryCommand(Guid TripId, string Title) : IRequest
 {
     public string? Comment { get; set; }
+    public string? PlaceId { get; set; }
+    public string? PlaceName { get; set; }
+    public string? PlaceAddress { get; set; }
 }
 
 public class CreateEntryCommandValidator : AbstractValidator<CreateEntryCommand>
@@ -54,6 +57,9 @@ public class CreateEntryCommandHandler : IRequestHandler<CreateEntryCommand>
         {
             Title = request.Title,
             Comment = request.Comment,
+            PlaceId = request.PlaceId,
+            PlaceName = request.PlaceName,
+            PlaceAddress = request.PlaceAddress,
             Trip = trip,
             User = user
         };

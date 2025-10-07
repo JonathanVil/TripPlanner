@@ -14,6 +14,10 @@ public record EntryDto
     public bool IsOwner { get; init; }
     public Guid TripId { get; init; }
 
+    public string? PlaceId { get; init; }
+    public string? PlaceName { get; init; }
+    public string? PlaceAddress { get; init; }
+
     public Dictionary<ReactionType, int> Reactions { get; set; } = [];
     public HashSet<ReactionType> UserOwnReactions { get; set; } = [];
 }
@@ -31,6 +35,9 @@ public class EntryMapper(IUser? user) : IMapper<Entry, EntryDto>
             CreatedBy = entry.User.Name,
             IsOwner = entry.User.Id == user?.Id,
             TripId = entry.TripId,
+            PlaceId = entry.PlaceId,
+            PlaceName = entry.PlaceName,
+            PlaceAddress = entry.PlaceAddress,
             Reactions = entry.Reactions.CountBy(r => r.Type).ToDictionary(),
             UserOwnReactions = user != null
                 ? entry.Reactions.Where(r => r.UserId == user?.Id).Select(r => r.Type).ToHashSet()

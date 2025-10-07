@@ -1,6 +1,8 @@
 @using MediatR
+@using TripPlanner.Application.Common.Interfaces
 @using TripPlanner.Application.Entries.Commands
 @inject ISender Sender
+@inject IPlacesService Places
 
 <EditForm Model="Model" OnValidSubmit="AddEntry" FormName="AddEntry">
     <div class="w-full mb-4 border rounded-lg bg-gray-700 border-gray-600">
@@ -12,6 +14,43 @@
             <InputTextArea @bind-Value="Model.Comment" id="description" rows="2"
                            class="px-4 w-full text-sm border-0 bg-gray-800 focus:ring-0 text-white placeholder-gray-400 resize-none"
                            placeholder="Write a comment..."/>
+
+            <div class="px-4 py-2 space-y-2">
+                <div class="relative">
+                    <input @oninput="OnPlaceQueryChanged" value="@_placeQuery" placeholder="Search for a place (optional)"
+                           class="w-full px-3 py-2 rounded bg-gray-900 text-sm text-white placeholder-gray-400 border border-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500" />
+
+                    @if (_suggestions?.Count > 0 && !_placeSelected)
+                    {
+                        <ul class="absolute z-10 mt-1 w-full max-h-48 overflow-auto bg-gray-800 border border-gray-600 rounded shadow">
+                            @foreach (var s in _suggestions)
+                            {
+                                <li class="px-3 py-2 hover:bg-gray-700 cursor-pointer" @onclick="(() => SelectPlace(s))">
+                                    <div class="text-sm text-white">@s.DisplayName</div>
+                                    @if (!string.IsNullOrWhiteSpace(s.Address))
+                                    {
+                                        <div class="text-xs text-gray-300">@s.Address</div>
+                                    }
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+
+                @if (_placeSelected)
+                {
+                    <div class="flex items-center justify-between text-sm text-gray-200 bg-gray-900 border border-gray-700 rounded px-3 py-2">
+                        <div>
+                            <div class="font-medium">@Model.PlaceName</div>
+                            @if (!string.IsNullOrWhiteSpace(Model.PlaceAddress))
+                            {
+                                <div class="text-xs text-gray-400">@Model.PlaceAddress</div>
+                            }
+                        </div>
+                        <button type="button" class="text-xs text-red-300 hover:text-red-200" @onclick="ClearPlace">Remove</button>
+                    </div>
+                }
+            </div>
         </div>
         <div class="flex items-center justify-between px-3 py-2 border-t border-gray-600">
             <FlowButton Type="FlowButton.ButtonType.Submit">Post suggestion</FlowButton>
@@ -52,19 +91,98 @@
 
 
 @code {
+    
+    private CancellationTokenSource? _searchCancellationTokenSource;
+    private Timer? _debounceTimer;
+    private const int DebounceDelayMs = 300; // Wait 300ms after user stops typing
+    private bool _isSearching = false;
     [SupplyParameterFromForm] private CreateEntryModel Model { get; set; } = new();
     [Parameter] public required Guid TripId { get; set; }
     [Parameter] public EventCallback Refresh { get; set; }
+
+    private List<IPlacesService.PlaceSuggestion>? _suggestions;
+    private string _placeQuery = string.Empty;
+    private bool _placeSelected => !string.IsNullOrWhiteSpace(Model.PlaceName);
+
+    private async Task OnPlaceQueryChanged(ChangeEventArgs e)
+    {
+        _placeQuery = e.Value?.ToString() ?? string.Empty;
+        if (_placeSelected)
+        {
+            return;
+        }
+        
+        // Cancel previous search
+        _searchCancellationTokenSource?.Cancel();
+        _debounceTimer?.Dispose();
+        
+        if (string.IsNullOrWhiteSpace(_placeQuery) || _placeQuery.Length < 2)
+        {
+            _suggestions = [];
+            _isSearching = false;
+            StateHasChanged();
+            return;
+        }
+
+        _isSearching = true;
+        StateHasChanged();
+
+        // Debounce the search
+        _debounceTimer = new Timer(async void (_) => 
+        {
+            _searchCancellationTokenSource = new CancellationTokenSource();
+            try
+            {
+                _suggestions = await Places.SearchAsync(_placeQuery, _searchCancellationTokenSource.Token);
+            }
+            catch (OperationCanceledException)
+            {
+                // Search was cancelled, ignore
+            }
+            catch
+            {
+                _suggestions = [];
+            }
+            finally
+            {
+                _isSearching = false;
+                await InvokeAsync(StateHasChanged);
+            }
+        }, null, DebounceDelayMs, Timeout.Infinite);
+    }
+
+    private void SelectPlace(IPlacesService.PlaceSuggestion s)
+    {
+        Model.PlaceId = s.Id;
+        Model.PlaceName = s.DisplayName;
+        Model.PlaceAddress = s.Address;
+        _placeQuery = string.Empty;
+        _suggestions = [];
+    }
+
+    private void ClearPlace()
+    {
+        Model.PlaceId = null;
+        Model.PlaceName = null;
+        Model.PlaceAddress = null;
+        _placeQuery = string.Empty;
+        _suggestions = [];
+    }
 
     private async Task AddEntry()
     {
         await Sender.Send(new CreateEntryCommand(TripId, Model.Title)
         {
-            Comment = Model.Comment
+            Comment = Model.Comment,
+            PlaceId = Model.PlaceId,
+            PlaceName = Model.PlaceName,
+            PlaceAddress = Model.PlaceAddress
         });
 
         // clear comment
         Model = new();
+        _placeQuery = string.Empty;
+        _suggestions = [];
 
         await Refresh.InvokeAsync();
     }
@@ -73,5 +191,8 @@
     {
         public string Title { get; set; }
         public string? Comment { get; set; }
+        public string? PlaceId { get; set; }
+        public string? PlaceName { get; set; }
+        public string? PlaceAddress { get; set; }
     }
 }

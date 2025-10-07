@@ -18,4 +18,8 @@
       <ProjectReference Include="..\TripPlanner.Core\TripPlanner.Core.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Trips\Commands\EditTripCommand.cs" />
+    </ItemGroup>
+
 </Project>
