@@ -1,15 +1,9 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<PostgresServerResource> postgres;
-if (builder.ExecutionContext.IsPublishMode)
-{
-    postgres = builder.AddPostgres("tripplanner-postgres");
-}
-else
-{
-    postgres = builder.AddPostgres("tripplanner-postgres", port: 56861)
-        .WithDataVolume();
-}
+builder.AddDockerComposeEnvironment("docker-env");
+
+var postgres = builder.AddPostgres("tripplanner-postgres", port: 56861)
+    .WithDataVolume();
 
 var database = postgres.AddDatabase("tripplanner-db");
 
